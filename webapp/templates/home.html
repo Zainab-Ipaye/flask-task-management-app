@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container text-center">
+            <h1 class="hero-title">Welcome to Zainab's Task Management App</h1>
+            <p class="hero-subtitle">Manage your tasks and projects with ease and efficiency.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('main.login') }}" class="btn-primary">Log In</a>
+                <a href="{{ url_for('main.register') }}" class="btn-primary btn-secondary">Register</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

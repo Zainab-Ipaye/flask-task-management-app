@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create Project</h1>
+
+<form method="POST" action="{{ url_for('main.create_project') }}">
+    {{ form.hidden_tag() }}
+    
+    <!-- Project Name Field -->
+    <div class="form-group">
+        {{ form.name.label }} 
+        {{ form.name(class="form-control") }}
+    </div>
+    
+    <!-- Start Date with Date Picker -->
+    <div class="form-group">
+        {{ form.start_date.label }} 
+        <input type="date" name="start_date" class="form-control" value="{{ form.start_date.data }}">
+    </div>
+    
+    <!-- End Date with Date Picker -->
+    <div class="form-group">
+        {{ form.end_date.label }} 
+        <input type="date" name="end_date" class="form-control" value="{{ form.end_date.data }}">
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Create Project</button>
+</form>
+
+
+{% endblock %}

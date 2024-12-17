@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <!-- <h2 class="page-title">Manage Users</h2> -->
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('main.update_role', user_id=user.id) }}" class="form-inline">
+                        <div class="form-group">
+                            <select name="role" class="form-control">
+                                <option value="user" {% if user.role == 'user' %} selected {% endif %}>User</option>
+                                <option value="admin" {% if user.role == 'admin' %} selected {% endif %}>Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm action-btn">Update Role</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

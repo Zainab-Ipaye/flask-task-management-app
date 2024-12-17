@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Task</h2>
+
+<form method="POST" action="{{ url_for('main.edit_task', task_id=task.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.title.label }} 
+        {{ form.title(class="form-control", placeholder="Enter task title") }}
+        {% if form.title.errors %}
+        <small class="text-danger">{{ form.title.errors[0] }}</small>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form.description.label }} 
+        {{ form.description(class="form-control", placeholder="Enter task description") }}
+        {% if form.description.errors %}
+        <small class="text-danger">{{ form.description.errors[0] }}</small>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form.hours_allocated.label }} 
+        {{ form.hours_allocated(class="form-control", placeholder="Enter hours allocated") }}
+        {% if form.hours_allocated.errors %}
+        <small class="text-danger">{{ form.hours_allocated.errors[0] }}</small>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form.assigned_to.label }} 
+        {{ form.assigned_to(class="form-control") }}
+        {% if form.assigned_to.errors %}
+        <small class="text-danger">{{ form.assigned_to.errors[0] }}</small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.status.label }} 
+        {{ form.status(class="form-control") }}
+        {% if form.status.errors %}
+        <small class="text-danger">{{ form.status.errors[0] }}</small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.hours_remaining.label }} 
+        {{ form.hours_remaining(class="form-control", placeholder="Enter hours remaining") }}
+        {% if form.hours_remaining.errors %}
+        <small class="text-danger">{{ form.hours_remaining.errors[0] }}</small>
+        {% endif %}
+    </div>
+
+     <!-- Project Dropdown -->
+     <div class="form-group">
+        {{ form.task_project.label }} 
+        {{ form.task_project(class="form-control") }}
+        {% if form.task_project.errors %}
+        <small class="text-danger">{{ form.task_project.errors[0] }}</small>
+        {% endif %}
+    </div>
+
+   
+    <button type="submit" class="btn btn-primary">Update Task</button>
+</form>
+{% endblock %}

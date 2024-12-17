@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edit Project</h1>
+    
+    <form method="POST" action="{{ url_for('main.edit_project', project_id=project.id) }}">
+        {{ form.hidden_tag() }}
+        
+        <!-- Project Name Field -->
+        <div class="form-group">
+            {{ form.name.label }} 
+            {{ form.name(class="form-control", value=project.name) }}
+        </div>
+        
+        <!-- Start Date Field -->
+        <div class="form-group">
+            {{ form.start_date.label }} 
+            {{ form.start_date(class="form-control", value=project.start_date.strftime('%Y-%m-%d')) }}
+        </div>
+        
+        <!-- End Date Field -->
+        <div class="form-group">
+            {{ form.end_date.label }} 
+            {{ form.end_date(class="form-control", value=project.end_date.strftime('%Y-%m-%d')) }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Update Project</button>
+    </form>
+
+{% endblock %}
+
