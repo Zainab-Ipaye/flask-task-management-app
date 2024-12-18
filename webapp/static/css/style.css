@@ -281,6 +281,12 @@ body {
     color: #17a2b8;
 }
 
+.text-danger {
+    color: #dc3545; /* Red for Bootstrap-like danger messages */
+    font-size: 0.9rem; /* Slightly smaller font */
+    margin-top: 5px; /* Add spacing between error and input field */
+}
+
 /* Footer */
 footer {
     text-align: center;
