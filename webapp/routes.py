@@ -249,23 +249,22 @@ def list_tasks():
 
 
 
-
-
-# Registration route 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data) #.decode('utf-8')
+        hashed_password = generate_password_hash(form.password.data)  # Hash the password
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
 
+        # Add user to the database
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
-    else:
-        flash('Registration failed. Check your emails and/or password', 'danger')
-        return redirect(url_for('main.login'))
+        return redirect(url_for('main.login'))  # Redirect after successful registration
+
+    # If form submission is invalid or on initial page load, render the form again
     return render_template('register.html', form=form)
+
 
 # Login route 
 @bp.route('/login', methods=['GET', 'POST'])

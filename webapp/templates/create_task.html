@@ -10,7 +10,7 @@
             {{ form.title.label }} 
             {{ form.title(class="form-control", placeholder="Enter task title") }}
             {% if form.title.errors %}
-            <small class="text-danger">{{ form.title.errors[0] }}</small>
+                <small class="text-danger">{{ form.title.errors[0] }}</small>
             {% endif %}
         </div>
 
@@ -18,7 +18,7 @@
             {{ form.description.label }} 
             {{ form.description(class="form-control", placeholder="Enter task description") }}
             {% if form.description.errors %}
-            <small class="text-danger">{{ form.description.errors[0] }}</small>
+                <small class="text-danger">{{ form.description.errors[0] }}</small>
             {% endif %}
         </div>
 
@@ -26,7 +26,7 @@
             {{ form.hours_allocated.label }} 
             {{ form.hours_allocated(class="form-control", placeholder="Enter hours allocated") }}
             {% if form.hours_allocated.errors %}
-            <small class="text-danger">{{ form.hours_allocated.errors[0] }}</small>
+                <small class="text-danger">{{ form.hours_allocated.errors[0] }}</small>
             {% endif %}
         </div>
 
@@ -34,7 +34,7 @@
             {{ form.assigned_to.label }} 
             {{ form.assigned_to(class="form-control") }}
             {% if form.assigned_to.errors %}
-            <small class="text-danger">{{ form.assigned_to.errors[0] }}</small>
+                <small class="text-danger">{{ form.assigned_to.errors[0] }}</small>
             {% endif %}
         </div>
 
@@ -42,7 +42,7 @@
             {{ form.status.label }} 
             {{ form.status(class="form-control") }}
             {% if form.status.errors %}
-            <small class="text-danger">{{ form.status.errors[0] }}</small>
+                <small class="text-danger">{{ form.status.errors[0] }}</small>
             {% endif %}
         </div>
 
@@ -50,13 +50,16 @@
             {{ form.hours_remaining.label }} 
             {{ form.hours_remaining(class="form-control", placeholder="Enter hours remaining") }}
             {% if form.hours_remaining.errors %}
-            <small class="text-danger">{{ form.hours_remaining.errors[0] }}</small>
+                <small class="text-danger">{{ form.hours_remaining.errors[0] }}</small>
             {% endif %}
         </div>
 
         <div class="form-group">
             <label for="project_filter">Project</label>
             {{ form.project_id(class="form-control", id="project_filter") }}
+            {% if form.project_id.errors %}
+                <small class="text-danger">{{ form.project_id.errors[0] }}</small>
+            {% endif %}
         </div>
     
        

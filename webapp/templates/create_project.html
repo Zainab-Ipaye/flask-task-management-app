@@ -10,18 +10,27 @@
     <div class="form-group">
         {{ form.name.label }} 
         {{ form.name(class="form-control") }}
+        {% if form.name.errors %}
+            <small class="text-danger">{{ form.name.errors[0] }}</small>
+        {% endif %}
     </div>
     
     <!-- Start Date with Date Picker -->
     <div class="form-group">
         {{ form.start_date.label }} 
         <input type="date" name="start_date" class="form-control" value="{{ form.start_date.data }}">
+        {% if form.start_date.errors %}
+            <small class="text-danger">{{ form.start_date.errors[0] }}</small>
+        {% endif %}
     </div>
     
     <!-- End Date with Date Picker -->
     <div class="form-group">
         {{ form.end_date.label }} 
         <input type="date" name="end_date" class="form-control" value="{{ form.end_date.data }}">
+        {% if form.end_date.errors %}
+            <small class="text-danger">{{ form.end_date.errors[0] }}</small>
+        {% endif %}
     </div>
     
     <button type="submit" class="btn btn-primary">Create Project</button>

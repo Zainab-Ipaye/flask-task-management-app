@@ -8,10 +8,16 @@
         <div class="form-group">
             {{ form.email.label }}
             {{ form.email(class="form-control") }}
+            {% if form.email.errors %}
+                <small class="text-danger">{{ form.email.errors[0] }}</small>
+            {% endif %}
         </div>
         <div class="form-group">
             {{ form.password.label }}
             {{ form.password(class="form-control") }}
+            {% if form.password.errors %}
+                <small class="text-danger">{{ form.password.errors[0] }}</small>
+            {% endif %}
         </div>
         <button type="submit" class="btn-primary">Login</button>
     </form>

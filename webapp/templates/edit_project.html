@@ -16,18 +16,27 @@
         <div class="form-group">
             {{ form.name.label }} 
             {{ form.name(class="form-control", value=project.name) }}
+            {% if form.name.errors %}
+                <small class="text-danger">{{ form.name.errors[0] }}</small>
+            {% endif %}
         </div>
         
         <!-- Start Date Field -->
         <div class="form-group">
             {{ form.start_date.label }} 
             {{ form.start_date(class="form-control", value=project.start_date.strftime('%Y-%m-%d')) }}
+            {% if form.start_date.errors %}
+                <small class="text-danger">{{ form.start_date.errors[0] }}</small>
+            {% endif %}
         </div>
         
         <!-- End Date Field -->
         <div class="form-group">
             {{ form.end_date.label }} 
             {{ form.end_date(class="form-control", value=project.end_date.strftime('%Y-%m-%d')) }}
+            {% if form.end_date.errors %}
+                <small class="text-danger">{{ form.end_date.errors[0] }}</small>
+            {% endif %}
         </div>
         
          <div class="form-buttons">
