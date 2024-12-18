@@ -96,61 +96,97 @@ body {
     padding: 20px;
 }
 
-/* Navigation Bar */
-.navbar {
-    background-color: #ffffff;
-    padding: 8px 20px;
+/* Main Navbar Styling (Updated) */
+.navbar.main-navbar {
+    background: linear-gradient(45deg, #6c5ce7, #a29bfe); /* Soft gradient background */
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;  /* Rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);  /* Soft shadow for depth */
 }
 
-.navbar-brand {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #6c5ce7;
+/* Navbar brand styling */
+.navbar.main-navbar .navbar-brand {
+    font-size: 2rem;
+    font-weight: 800;  /* Bold font */
+    color: white;
     text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;  /* Smooth color transition */
 }
 
-.navbar-links {
+.navbar.main-navbar .navbar-brand:hover {
+    color: #f3f3f3;  /* Lighten color on hover */
+}
+
+/* Navbar links */
+.navbar.main-navbar .navbar-links {
     list-style: none;
     display: flex;
-    gap: 25px;
+    gap: 40px;
     margin-left: auto;
 }
 
-.navbar-links li a {
+.navbar.main-navbar .navbar-links li {
+    position: relative; /* Positioning for hover effects */
+}
+
+.navbar.main-navbar .navbar-links li a {
     text-decoration: none;
-    color: #333;
-    font-size: 1rem;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;  /* Smooth transitions */
 }
 
-.navbar-links li a:hover {
-    color: #a49dda;
+.navbar.main-navbar .navbar-links li a:hover {
+    color: #f3f3f3;
+    transform: translateY(-3px);  /* Slight lifting effect */
 }
 
-/* Responsive Navbar */
-#navbarLinks {
+/* Active link styling */
+.navbar.main-navbar .navbar-links .active a {
+    color: #f3f3f3;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* Hover effect for the navbar links */
+.navbar.main-navbar .navbar-links li a:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #f3f3f3;
+    transition: width 0.3s ease;
+    bottom: -5px; /* Place the underline just below the text */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navbar.main-navbar .navbar-links li a:hover:after {
+    width: 100%; /* Expand the underline when hovered */
+}
+
+/* Responsive Navbar for Main Navbar */
+#navbarLinks.main-navbar {
     display: none;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
-#navbarLinks.active {
-    display: flex; 
+#navbarLinks.main-navbar.active {
+    display: flex;
 }
 
-/* Example CSS to highlight the active link */
-.navbar-links .active a {
-    font-weight: bold;
-    color: #6c5ce7; /* Highlight color */
-}
-
-
-.navbar-toggler {
-    font-size: 1.8rem;
+.navbar-toggler.main-navbar {
+    font-size: 2rem;
     background: none;
     border: none;
     cursor: pointer;
@@ -158,39 +194,60 @@ body {
 }
 
 @media (max-width: 768px) {
-    .navbar-toggler {
+    .navbar-toggler.main-navbar {
         display: block;
     }
 
-    .navbar-links {
+    .navbar.main-navbar .navbar-links {
         display: none;
     }
 
-    .navbar-links.active {
+    .navbar.main-navbar .navbar-links.active {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 15px;
     }
 }
 
-/* Buttons */
-button, .btn-primary {
-    padding: 12px;
-    font-size: 1.1rem;
-    color: white;
-    background-color: #6c5ce7;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    width: 100%;
+/* Filter Navbar (Unaltered) */
+/* If the filter navbar has a specific class like .navbar.filter-navbar, leave it untouched */
+.navbar.filter-navbar {
+    background-color: #ffffff; /* Default background */
+    padding: 10px 20px;
+    box-shadow: none; /* No shadow for the filter navbar */
+    border-radius: 0; /* Keep it square */
 }
 
-button:hover, .btn-primary:hover {
-    background-color: #5a4ecf;
+.navbar.filter-navbar .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
 }
+
+.navbar.filter-navbar .navbar-links li a {
+    text-decoration: none;
+    color: #333; /* Default color */
+    font-size: 1rem;
+}
+
+.navbar.filter-navbar .navbar-links li a:hover {
+    color: #6c5ce7; /* Hover effect for filter links */
+}
+
+/* No additional changes for the filter navbar */
+
+
+
+
+
+
+
+/* Large buttons */
+.btn-lg {
+    font-size: 1.25rem;
+    padding: 14px 30px;
+}
+
 
 /* Alerts */
 .alert-container {
@@ -329,68 +386,171 @@ footer {
     cursor: pointer;
 }
 
-/* Action Buttons */
-.action-btn {
-    display: inline-block;
-    padding: 10px 18px;
-    font-size: 1rem;
-    border-radius: 5px;
-    text-decoration: none;
-    color: #fff;
-    transition: background-color 0.3s ease, box-shadow 0.2s ease;
-    text-align: center;
-    border: none;
-}
 
-.edit-btn {
-    background-color: #28a745;
-}
 
-.edit-btn:hover {
-    background-color: #218838;
-}
 
-.delete-btn {
-    background-color: #dc3545;
-}
 
-.delete-btn:hover {
-    background-color: #c82333;
-}
 
-/* Ensuring buttons in form align */
-form button.delete-btn {
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-/* Button for Creating Tasks */
-.btn-primary {
-    display: inline-block;
-    padding: 12px 24px;
-    margin-top: 25px;
-    background-color: #6c5ce7;
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #5a4ecf;
-}
-
+/* Flash Messages Styles */
 #flash-messages {
     padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer; /* Allow users to click to dismiss */
+    opacity: 1;
+    transition: opacity 1s ease-out; /* Smooth fade-out effect */
 }
 
 #flash-messages.hidden {
-    display: none; /* Hide when the 'hidden' class is applied */
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction when hidden */
+    display: none; /* Ensure it's not displayed after fading */
 }
+
+
+
+
+
+
+/* Styling for task status badges */
+.badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.badge.new {
+    background-color: #28a745;  /* Green */
+}
+
+.badge.in-progress {
+    background-color: #17a2b8;  /* Blue */
+}
+
+.badge.completed {
+    background-color: #ffc107;  /* Yellow */
+}
+
+.badge.removed {
+    background-color: #dc3545;  /* Red */
+}
+
+
+
+
+/* Ensure icons are targeted correctly */
+.fa-pencil-alt, .fa-trash, .bi-pencil, .bi-trash {
+    color: black; /* Default black color */
+    font-size: 20px; /* Optional: Ensure size is consistent */
+}
+
+/* Add a hover effect to change color */
+.fa-pencil-alt:hover, .fa-trash:hover, .bi-pencil:hover, .bi-trash:hover {
+    color: #007bff; /* Change to blue on hover (or use your primary color) */
+}
+
+
+
+
+
+
+
+
+/* General Button Styles (applies to both buttons and links styled as buttons) */
+button, .btn-primary, .btn-secondary, a.btn-secondary {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 30px; /* Ensure roundness */
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from links */
+    text-align: center; /* Ensure text is centered */
+    transition: background-color 0.3s ease;
+    border: none; /* No border unless specified */
+}
+
+button, .btn-primary {
+    background-color: #6c5ce7; /* Primary button color */
+    color: white;
+}
+
+button:hover, .btn-primary:hover {
+    background-color: #5a4ecf;
+}
+
+a.btn-secondary {
+    background-color: #a29bfe; /* Secondary button color */
+    color: white;
+}
+
+a.btn-secondary:hover {
+    background-color: #6c5ce7;
+    color: white;
+}
+
+/* Optional: Add some margin between buttons if needed */
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Push cancel button to the right */
+.form-buttons .btn-secondary {
+    margin-left: auto;
+}
+
+/* Ensure padding and font size for both buttons */
+.form-buttons .btn-primary,
+.form-buttons .btn-secondary {
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 30px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+
+
+
+
+/* Navbar Styling for the Edit Page */
+.edit-navbar {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    gap: 30px; /* Adds spacing between the links */
+    margin-bottom: 20px; /* Space below navbar */
+    font-size: 1.2rem; /* Makes text larger */
+}
+
+.edit-navbar .nav-link {
+    font-weight: 700; /* Makes the text bold */
+    text-decoration: none; /* Removes underline */
+    color: #6c5ce7; /* Primary color from your app palette */
+    transition: color 0.3s ease; /* Smooth color change on hover */
+}
+
+.edit-navbar .nav-link:hover {
+    color: #4938b3; /* Darker shade on hover */
+}
+
+/* Optional: Make the links slightly larger on hover */
+.edit-navbar .nav-link:hover {
+    font-size: 1.3rem; /* Slightly increase size on hover */
+}
+
+
+
+
+
+
+
+
+
+
+

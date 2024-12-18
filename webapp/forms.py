@@ -56,7 +56,7 @@ class TaskForm(FlaskForm):
                          default='new', validators=[DataRequired()])
     
     assigned_to = SelectField('Assigned To', coerce=coerce_to_int_or_none, validators=[DataRequired()])  
-    task_project = SelectField('Project', coerce=coerce_to_int_or_none, validators=[DataRequired()])
+    project_id = SelectField('Project', coerce=coerce_to_int_or_none, validators=[DataRequired()])
     #task_sprint = SelectField('Sprint', choices=[], coerce=coerce_to_int_or_none)
 
     
@@ -75,7 +75,7 @@ class TaskForm(FlaskForm):
         super().__init__(*args, **kwargs)
         with current_app.app_context():
 
-            self.task_project.choices = [(None, 'Select Project')] + [
+            self.project_id.choices = [(None, 'Select Project')] + [
                 (project.id, project.name) for project in Project.query.all()
             ]
 

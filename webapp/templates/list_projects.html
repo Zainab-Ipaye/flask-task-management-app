@@ -3,6 +3,9 @@
 {% block content %}
 <!-- <h2 class="page-title">Projects</h2> -->
 
+<!-- Button to create a new project -->
+<a href="{{ url_for('main.create_project') }}" class="btn btn-primary">Create New Project</a>
+
 <table class="styled-table">
     <thead>
         <tr>
@@ -10,7 +13,7 @@
             <th>Project Name</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Actions</th>
+            <!-- <th>Actions</th> -->
         </tr>
     </thead>
     <tbody>
@@ -22,17 +25,20 @@
             <td>{{ project.end_date.strftime('%Y-%m-%d') }}</td>
             <td>
                 <!-- Edit link for each project -->
-                <a href="{{ url_for('main.edit_project', project_id=project.id) }}" class="action-btn edit-btn">Edit</a>
-
-                <!-- Form for deleting the project -->
+                <a href="{{ url_for('main.edit_project', project_id=project.id) }}" style="color: #28a745; font-size: 20px; cursor: pointer;" title="Edit Project">
+                    🖊️
+                </a>                <form action="{{ url_for('main.delete_project', project_id=project.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" style="border: none; background: transparent; color: #dc3545; cursor: pointer;" title="Delete Project", onclick="return confirm('Are you sure you want to delete this project?')">
+                        🗑️
+                    </button>
+                <!-- 
                 <form method="POST" action="{{ url_for('main.delete_project', project_id=project.id) }}" style="display:inline;">
-                    <button type="submit" class="action-btn delete-btn" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
-                </form>
+                    <button type="submit" class="btn-secondary" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
+                </form>Form for deleting the project -->
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<!-- Button to create a new project -->
-<a href="{{ url_for('main.create_project') }}" class="btn btn-primary">Create New Project</a>
+
 {% endblock %}

@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Edit Project</h1>
+
+<div class="edit-navbar">
+    <a href="{{ url_for('main.list_projects') }}" class="nav-link">Cancel</a>
+</div>
+
+
+    <h2>Edit Project</h2>
     
     <form method="POST" action="{{ url_for('main.edit_project', project_id=project.id) }}">
         {{ form.hidden_tag() }}
@@ -24,7 +30,13 @@
             {{ form.end_date(class="form-control", value=project.end_date.strftime('%Y-%m-%d')) }}
         </div>
         
-        <button type="submit" class="btn btn-primary">Update Project</button>
+         <div class="form-buttons">
+
+            <button type="submit" class="btn-primary">Update Project</button>
+        </div>
+
+            <!--<a href="{{ url_for('main.list_projects') }}" class="btn-secondary">Cancel</a> 
+        </div> -->
     </form>
 
 {% endblock %}

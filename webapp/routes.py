@@ -2,8 +2,9 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user, current_user
 from webapp import db, bcrypt 
 from webapp.models import User, Task, Project #, Sprint
-from flask import jsonify
 from webapp.forms import RegistrationForm, LoginForm, TaskForm, ProjectForm #, SprintForm
+from werkzeug.security import check_password_hash, generate_password_hash
+
 
 bp = Blueprint('main', __name__)
 
@@ -17,6 +18,39 @@ def home():
         return redirect(url_for('main.list_tasks'))
     # If the user is not logged in, show the login/register page
     return render_template('home.html')
+
+
+
+@bp.route('/profile')
+def profile():
+    # Fetch user details from the database
+    user = User.query.get(current_user.id)  # assuming current_user is logged in
+    return render_template('profile.html', user=user)
+
+
+@bp.route('/update_profile', methods=['POST'])
+def update_profile():
+    # Get the current logged-in user
+    user = User.query.get(current_user.id)
+    
+    # Update the user's details
+    user.username = request.form['username']
+    user.email = request.form['email']
+
+    # Commit the changes to the database
+    db.session.commit()
+    flash('Profile updated successfully', 'success')
+
+    # Redirect to the profile page after updating
+    return redirect(url_for('main.profile'))
+
+
+
+
+
+
+
+
 
 
 
@@ -99,7 +133,7 @@ def create_task():
    # form.task_sprint.choices = []
 
     form.assigned_to.choices = [('', 'Select User')] + [(user.id, user.username) for user in User.query.all()]
-    form.task_project.choices = [('', 'Select Project')] + [(project.id, project.name) for project in Project.query.all()]
+    form.project_id.choices = [('', 'Select Project')] + [(project.id, project.name) for project in Project.query.all()]
    # form.task_sprint.choices = [('', 'Select Sprint')] + [(sprint.id, sprint.name) for sprint in Sprint.query.all()]
     
 
@@ -112,7 +146,7 @@ def create_task():
             status=form.status.data, 
             hours_remaining=form.hours_remaining.data, 
             assigned_to=form.assigned_to.data,
-            project_id=form.task_project.data,
+            project_id=form.project_id.data,
          #   sprint_id=form.task_sprint.data,   
             created_by=current_user.id)
         
@@ -135,31 +169,23 @@ def edit_task(task_id):
     #sprints = Sprint.query.filter_by(project=project_id).all() if project_id else []
 
     form.assigned_to.choices = [(user.id, user.username) for user in User.query.all()]  # Users for the 'assigned_to' field
-    form.task_project.choices = [(project.id, project.name) for project in Project.query.all()]  # Projects for the 'task_project' field
+    #form.project_id.choices = [(project.id, project.name) for project in Project.query.all()] 
+    form.project_id.choices = [('', 'Select Project')] + [(project.id, project.name) for project in Project.query.all()]
+ # Projects for the 'task_project' field
     #form.task_sprint.choices = [(sprint.id, sprint.name) for sprint in sprints]
-    form.task_project.data = task.project_id
     #form.task_sprint.data = sprint_id
 #selected_sprint = task.sprint.id if task.sprint else None
     #form.task_project.data = task.project.id if task.project else None  # Set the pre-selected project
     #form.task_sprint.data = task.sprint.id if task.sprint else None
-
+    
     if form.validate_on_submit():
-
-        print("Form data:")
-        print(f"Title: {form.title.data}")
-        print(f"Description: {form.description.data}")
-        print(f"Hours Allocated: {form.hours_allocated.data}")
-        print(f"Assigned to: {form.assigned_to.data}")
-        print(f"Status: {form.status.data}")
-        print(f"Hours Remaining: {form.hours_remaining.data}")
-        print(f"Selected Project ID: {form.task_project.data}")
 
         task.title = form.title.data
         task.description = form.description.data
         task.hours_allocated = form.hours_allocated.data
         task.status=form.status.data
         task.hours_remaining=form.hours_remaining.data
-        task.project_id = form.task_project.data  # This should update the project_id field
+        task.project_id = form.project_id.data  # This should update the project_id field
         #task.task_sprint=form.task_sprint.data
         task.assigned_to=form.assigned_to.data
 
@@ -209,6 +235,13 @@ def list_tasks():
     projects = Project.query.all()
    # sprints = Sprint.query.all()
 
+    users_with_tasks = set(task.assignee for task in tasks if task.assignee)
+    projects_with_tasks = set(task.project for task in tasks if task.project)
+    
+    users = User.query.filter(User.id.in_([user.id for user in users_with_tasks])).all()
+    projects = Project.query.filter(Project.id.in_([project.id for project in projects_with_tasks])).all()
+
+
     return render_template('list_tasks.html', tasks=tasks, users=users, projects=projects) #, sprints=sprints)
 
 
@@ -223,8 +256,9 @@ def list_tasks():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        hashed_password = generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
@@ -250,9 +284,7 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
-    return redirect(url_for('main.login'))
-
-
+    return redirect(url_for('main.home'))
 
 
 

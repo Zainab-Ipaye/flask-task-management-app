@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Profile</h1>
+    <div class="profile-info">
+        <!-- Profile Information -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <h3>Username:</h3>
+                <p>{{ user.username }}</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Email:</h3>
+                <p>{{ user.email }}</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Role:</h3>
+                <p>{{ user.role }}</p>
+            </div>
+        </div>
+
+        <!-- Toggle Edit Profile Form -->
+        <h3 class="mt-5 mb-3">Edit Profile</h3>
+        <button class="btn btn-secondary mb-3" id="toggle-profile-form">Show Edit Profile Form</button>
+
+        <!-- Profile Edit Form (Initially Hidden) -->
+        <div id="profile-form" style="display:none;">
+            <form method="POST" action="{{ url_for('main.update_profile') }}">
+                <div class="form-group mb-3">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control" value="{{ user.username }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

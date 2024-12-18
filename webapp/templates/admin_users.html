@@ -2,14 +2,13 @@
 
 {% block content %}
 <div class="container">
-    <!-- <h2 class="page-title">Manage Users</h2> -->
-
     <table class="styled-table">
         <thead>
             <tr>
                 <th>Username</th>
                 <th>Email</th>
-                <th>Action</th>
+                <th>Role</th>  <!-- New column for dropdown -->
+                <!-- <th>Action</th>  --> <!-- New column for the Update button -->
             </tr>
         </thead>
         <tbody>
@@ -18,6 +17,7 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>
+                    <!-- Dropdown for user role -->
                     <form method="POST" action="{{ url_for('main.update_role', user_id=user.id) }}" class="form-inline">
                         <div class="form-group">
                             <select name="role" class="form-control">
@@ -25,7 +25,10 @@
                                 <option value="admin" {% if user.role == 'admin' %} selected {% endif %}>Admin</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-sm action-btn">Update Role</button>
+                </td>
+                <td>
+                    <!-- Update Role button -->
+                    <button type="submit" class="btn btn-primary">Update Role</button>
                     </form>
                 </td>
             </tr>

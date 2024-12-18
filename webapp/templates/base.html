@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar main-navbar">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.home') }}">Task Management</a>
             
@@ -25,6 +25,9 @@
                             <a href="{{ url_for('main.manage_users') }}">Manage Roles</a>
                         </li>
                     {% endif %}
+                    <li class="{% if request.endpoint == 'main.profile' %}active{% endif %}">
+                        <a href="{{ url_for('main.profile') }}">Profile</a>
+                    </li> 
                     <li class="{% if request.endpoint == 'main.logout' %}active{% endif %}">
                         <a id="logout-link" class="text-danger" href="{{ url_for('main.logout') }}">Logout</a>
                     </li>
