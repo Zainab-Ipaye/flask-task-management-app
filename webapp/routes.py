@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from webapp import db, bcrypt 
 from webapp.models import User, Task, Project #, Sprint
 from webapp.forms import RegistrationForm, LoginForm, TaskForm, ProjectForm #, SprintForm
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import  generate_password_hash
 
 
 bp = Blueprint('main', __name__)
@@ -253,7 +253,7 @@ def list_tasks():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data)  # Hash the password
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')  # Hash password with bcrypt
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
 
         # Add user to the database
