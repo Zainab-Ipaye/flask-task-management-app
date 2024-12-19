@@ -1,17 +1,24 @@
+    // Toggle the visibility of the filter button
 document.addEventListener('DOMContentLoaded', function() {
-    const filterToggleBtn = document.getElementById('filter-toggle-btn');
+    const filterToggleButton = document.getElementById('filter-toggle-btn');
     const filterForm = document.getElementById('filter-form');
 
-    filterToggleBtn.addEventListener('click', function() {
-        if (filterForm.style.display === 'none' || filterForm.style.display === '') {
-            filterForm.style.display = 'block';
-        } else {
-            filterForm.style.display = 'none';
-        }
-    });
+    if (filterToggleButton && filterForm) {
+        filterToggleButton.addEventListener('click', function () {
+            // Toggle the visibility of the filter form
+            if (filterForm.style.display === 'none' || !filterForm.style.display) {
+                filterForm.style.display = 'block'; // Show the form
+            } else {
+                filterForm.style.display = 'none'; // Hide the form
+            }
+        });
+    }
 });
 
 
+
+
+    // Timeout Notifications
 
 document.addEventListener('DOMContentLoaded', function () {
     // Get the flash message container
@@ -59,18 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-
-    /* Toggle the visibility of the password change form
-    document.getElementById('toggle-password-form').addEventListener('click', function() {
-        var form = document.getElementById('password-form');
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-            this.textContent = 'Hide Change Password Form';
-        } else {
-            form.style.display = 'none';
-            this.textContent = 'Show Change Password Form';
-        }
-    }); */ 
 
     // Toggle the visibility of the profile edit form
     document.getElementById('toggle-profile-form').addEventListener('click', function() {

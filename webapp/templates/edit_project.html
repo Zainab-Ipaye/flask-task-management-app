@@ -21,6 +21,15 @@
             {% endif %}
         </div>
         
+         <!-- Description Field -->
+        <div class="form-group">
+            {{ form.description.label }} 
+            {{ form.description(class="form-control", placeholder="Enter project description") }}
+            {% if form.description.errors %}
+                <small class="text-danger">{{ form.description.errors[0] }}</small>
+            {% endif %}
+        </div>
+
         <!-- Start Date Field -->
         <div class="form-group">
             {{ form.start_date.label }} 
@@ -39,13 +48,22 @@
             {% endif %}
         </div>
         
+         <!-- Status Field -->
+        <div class="form-group">
+            {{ form.status.label }} 
+            {{ form.status(class="form-control") }}
+            {% if form.status.errors %}
+                <small class="text-danger">{{ form.status.errors[0] }}</small>
+            {% endif %}
+        </div>
+
+
          <div class="form-buttons">
 
+        <!-- Update Project Button -->
             <button type="submit" class="btn-primary">Update Project</button>
         </div>
 
-            <!--<a href="{{ url_for('main.list_projects') }}" class="btn-secondary">Cancel</a> 
-        </div> -->
     </form>
 
 {% endblock %}

@@ -3,15 +3,18 @@ from webapp import db, bcrypt
 from flask_login import UserMixin
 
 
+##DB SCHEMA
+
 class Project(db.Model):
     __tablename__ = 'projects'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(20), default='Not Started', nullable=False)
 
     tasks = db.relationship('Task', backref='project', lazy=True)
-
 
     def __repr__(self):
         return f'<Project {self.name}>'
@@ -47,7 +50,7 @@ class Task(db.Model):
     status = db.Column(db.String(20), default='new', nullable=False)
     hours_remaining = db.Column(db.Integer, nullable=False)
     assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Owner of the task
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  
 
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)  
     projectlookupfortasks = db.relationship('Project', foreign_keys=[project_id], backref='project_lookup_for_tasks')

@@ -13,7 +13,7 @@
         </div>
     </nav>
 
-    <!-- Navbar for Filter List (Visible if tasks count >= 2) -->
+    <!-- Navbar for Filter List (Visible if tasks count >= 1) -->
     {% if tasks|length >= 1 %}
     <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
         <div class="container-fluid">
@@ -68,7 +68,8 @@
                 <th>Status</th>
                 <th>Hours Remaining</th> 
                 <th>Assigned To</th>
-                <!-- <th>Actions</th> -->
+                <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -80,7 +81,7 @@
                 <td>{{ task.hours_remaining }}</td>
                 <td>{{ task.assignee.username if task.assignee else 'N/A' }}</td>
                 <td>
-                    <!-- Edit link for each task -->
+                    <!-- Edit & Delete link for each task -->
                     <a href="{{ url_for('main.edit_task', task_id=task.id) }}" style="color: #28a745; font-size: 20px; cursor: pointer;" title="Edit Task">
                         🖊️
                     </a>

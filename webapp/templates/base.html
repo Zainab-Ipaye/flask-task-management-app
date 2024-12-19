@@ -9,40 +9,45 @@
 <body>
     <nav class="navbar main-navbar">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.home') }}">Task Management</a>
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">Zainab's Task Management App</a>
             
+            <!-- Navbar links in order-->
             <ul class="navbar-links">
-                {% if current_user.is_authenticated %}
-                    <li class="{% if request.endpoint == 'main.list_tasks' %}active{% endif %}">
-                        <a href="{{ url_for('main.list_tasks') }}">Tasks</a>
-                    </li>
-                    <li class="{% if request.endpoint == 'main.list_projects' %}active{% endif %}">
-                        <a href="{{ url_for('main.list_projects') }}">Projects</a>
 
-               
-                    {% if current_user.role == 'admin' %}
-                        <li class="{% if request.endpoint == 'main.manage_users' %}active{% endif %}">
-                            <a href="{{ url_for('main.manage_users') }}">Manage Roles</a>
-                        </li>
-                    {% endif %}
-                    <li class="{% if request.endpoint == 'main.profile' %}active{% endif %}">
-                        <a href="{{ url_for('main.profile') }}">Profile</a>
-                    </li> 
-                    <li class="{% if request.endpoint == 'main.logout' %}active{% endif %}">
-                        <a id="logout-link" class="text-danger" href="{{ url_for('main.logout') }}">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="{% if request.endpoint == 'main.login' %}active{% endif %}">
-                        <a href="{{ url_for('main.login') }}">Login</a>
-                    </li>
-                    <li class="{% if request.endpoint == 'main.register' %}active{% endif %}">
-                        <a href="{{ url_for('main.register') }}">Register</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
+                <!-- If user is logged in display the following Navbar links-->
+                {% if current_user.is_authenticated %}
+                <li class="{% if request.endpoint == 'main.list_tasks' %}active{% endif %}">
+                    <a href="{{ url_for('main.list_tasks') }}">Tasks</a>
+                </li>
+                <li class="{% if request.endpoint == 'main.list_projects' %}active{% endif %}">
+                    <a href="{{ url_for('main.list_projects') }}">Projects</a>
+
+                <!-- Make Manage Roles visible to all users (no conditional check for role) -->
+                <li class="{% if request.endpoint == 'main.manage_users' %}active{% endif %}">
+                    <a href="{{ url_for('main.manage_users') }}">Manage Roles</a>
+                </li>
+
+                <li class="{% if request.endpoint == 'main.profile' %}active{% endif %}">
+                    <a href="{{ url_for('main.profile') }}">Profile</a>
+                </li> 
+                <li class="{% if request.endpoint == 'main.logout' %}active{% endif %}">
+                    <a id="logout-link" class="text-danger" href="{{ url_for('main.logout') }}">Logout</a>
+                </li>
+            {% else %}
+
+            <!-- If user is NOT logged in display the following Navbar links-->
+                <li class="{% if request.endpoint == 'main.login' %}active{% endif %}">
+                    <a href="{{ url_for('main.login') }}">Login</a>
+                </li>
+                <li class="{% if request.endpoint == 'main.register' %}active{% endif %}">
+                    <a href="{{ url_for('main.register') }}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
     
+    <!-- Displays flash messages in  application. -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <div id="flash-messages">

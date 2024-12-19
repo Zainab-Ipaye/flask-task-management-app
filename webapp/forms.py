@@ -10,10 +10,16 @@ def coerce_to_int_or_none(value):
     return int(value)
 
 
+#Project Form Fields & Validation
 class ProjectForm(FlaskForm):
     name = StringField('Project Name', validators=[DataRequired("Name is required"), Length(min=5, max=100, message="Username must be at least 5 characters.")])
+    description = TextAreaField('Description', validators=[DataRequired("Description is required"), Length(min=5, max=1000, message="Description must have at least 5 characters and must not exceed 1000 characters")])
     start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired("Start Date is required")])
     end_date = DateField('End Date', format='%Y-%m-%d', validators=[DataRequired("End Date is required")])
+    status = SelectField('Status', choices=[('Not Started', 'Not Started'), 
+                                             ('In Progress', 'In Progress'), 
+                                             ('Completed', 'Completed')], 
+                        default='Not Started', validators=[DataRequired("Status is required")])
     submit = SubmitField('Create Project')
 
     def validate_end_date(self, field):
@@ -23,7 +29,7 @@ class ProjectForm(FlaskForm):
         if self.start_date.data and field.data and field.data <= self.start_date.data:
             raise ValidationError("End Date must be after the Start Date.")
 
-
+#Registration Form Fields & Validation
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired("Username is required"), Length(min=5, max=100, message="Username must be at least 5 characters.")])
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
@@ -31,15 +37,16 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(message="Please confirm your password."), EqualTo('password', message="Password must match")])
     submit = SubmitField('Sign Up')
 
+#Login Form Fields & Validation
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
     password = PasswordField('Password', validators=[DataRequired("Password is required"), Length(min=8, message="Password must have at least 8 characters")])
     submit = SubmitField('Login')
 
-
+#Task Form Fields & Validation
 class TaskForm(FlaskForm):
     title = StringField('Task Title', validators=[DataRequired("Title is required"), Length(min=5, max=100, message="Title must have at least 5 characters")])
-    description = TextAreaField('Description', validators=[DataRequired("Description is required"), Length(min=5, max=500, message="Description must have at least 5 characters")])
+    description = TextAreaField('Description', validators=[DataRequired("Description is required"), Length(min=5, max=1000, message="Description must have at least 5 characters and must not exceed 1000 characters")])
     hours_allocated = IntegerField('Hours Allocated', validators=[DataRequired("Hours Allocated is required")])
     status = SelectField('Status', choices=[('New', 'New'), 
                                              ('In Progress', 'In Progress'), 
@@ -60,6 +67,7 @@ class TaskForm(FlaskForm):
 
     submit = SubmitField('Create Task')
 
+#Setting Up Assigned To Lookup Field
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         with current_app.app_context():
@@ -68,6 +76,7 @@ class TaskForm(FlaskForm):
                 (user.id, user.username) for user in User.query.all()
             ]
 
+#Setting Up Project Lookup Field
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         with current_app.app_context():

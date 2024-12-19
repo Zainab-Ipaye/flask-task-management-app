@@ -2,13 +2,42 @@
 
 {% block content %}
 <div class="container">
+
+    <!-- Navbar for Filter List (Visible if users count >= 1) -->
+    {% if users|length >= 1 %}
+    <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
+        <div class="container-fluid">
+            <!-- Align "Filter List" button to the right -->
+            <div class="d-flex ms-auto">
+                <button id="filter-toggle-btn" class="btn btn-primary">
+                    FILTER
+                </button>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <form method="GET" action="{{ url_for('main.manage_users') }}" class="form-inline mb-4" id="filter-form">
+        <div class="form-group">
+            <label for="username" class="mr-2">Username:</label>
+            <input type="text" name="username" id="username" class="form-control mr-4" 
+                   value="{{ request.args.get('username', '') }}" placeholder="Enter username">
+        </div>
+        <button type="submit" class="btn btn-primary">Apply Filter</button>
+        </div>
+
+    </form>
+
+
+
     <table class="styled-table">
         <thead>
             <tr>
                 <th>Username</th>
                 <th>Email</th>
-                <th>Role</th>  <!-- New column for dropdown -->
-                <!-- <th>Action</th>  --> <!-- New column for the Update button -->
+                <th>Role</th>  
+                <th>Actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -17,7 +46,9 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>
-                    <!-- Dropdown for user role -->
+
+                    
+                    <!-- Dropdown for user role selection-->
                     <form method="POST" action="{{ url_for('main.update_role', user_id=user.id) }}" class="form-inline">
                         <div class="form-group">
                             <select name="role" class="form-control">

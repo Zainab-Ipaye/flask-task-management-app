@@ -5,6 +5,7 @@
     <h2>Login</h2>
     <form method="POST" action="{{ url_for('main.login') }}">
         {{ form.hidden_tag() }}
+        <!-- Email Field-->
         <div class="form-group">
             {{ form.email.label }}
             {{ form.email(class="form-control") }}
@@ -12,6 +13,8 @@
                 <small class="text-danger">{{ form.email.errors[0] }}</small>
             {% endif %}
         </div>
+
+        <!-- Password Field-->
         <div class="form-group">
             {{ form.password.label }}
             {{ form.password(class="form-control") }}

@@ -209,8 +209,7 @@ body {
     }
 }
 
-/* Filter Navbar (Unaltered) */
-/* If the filter navbar has a specific class like .navbar.filter-navbar, leave it untouched */
+/* Filter Navbar */
 .navbar.filter-navbar {
     background-color: #ffffff; /* Default background */
     padding: 10px 20px;
@@ -234,10 +233,14 @@ body {
     color: #6c5ce7; /* Hover effect for filter links */
 }
 
-/* No additional changes for the filter navbar */
 
 
 
+
+/*Set filter toggle to false*/
+#filter-form {
+    display: none; /* Hide the form by default */
+}
 
 
 
@@ -282,9 +285,9 @@ body {
 }
 
 .text-danger {
-    color: #dc3545; /* Red for Bootstrap-like danger messages */
-    font-size: 0.9rem; /* Slightly smaller font */
-    margin-top: 5px; /* Add spacing between error and input field */
+    color: #dc3545; 
+    font-size: 0.9rem; 
+    margin-top: 5px; 
 }
 
 /* Footer */
@@ -419,7 +422,7 @@ footer {
 
 
 
-/* Styling for task status badges */
+/* Styling for task/project status badges */
 .badge {
     padding: 5px 10px;
     border-radius: 12px;
@@ -432,30 +435,22 @@ footer {
 }
 
 .badge.in-progress {
-    background-color: #17a2b8;  /* Blue */
+    background-color: #ffc107;  /* Yello */
 }
 
 .badge.completed {
-    background-color: #ffc107;  /* Yellow */
+    background-color: #17a2b8;  /* Blue */
 }
 
 .badge.removed {
     background-color: #dc3545;  /* Red */
 }
+.badge.not-started {
+    background-color: gray;
+} 
 
 
 
-
-/* Ensure icons are targeted correctly */
-.fa-pencil-alt, .fa-trash, .bi-pencil, .bi-trash {
-    color: black; /* Default black color */
-    font-size: 20px; /* Optional: Ensure size is consistent */
-}
-
-/* Add a hover effect to change color */
-.fa-pencil-alt:hover, .fa-trash:hover, .bi-pencil:hover, .bi-trash:hover {
-    color: #007bff; /* Change to blue on hover (or use your primary color) */
-}
 
 
 
@@ -498,7 +493,6 @@ a.btn-secondary:hover {
     color: white;
 }
 
-/* Optional: Add some margin between buttons if needed */
 .form-buttons {
     display: flex;
     justify-content: space-between;

@@ -3,6 +3,9 @@
 {% block content %}
 
 <div class="edit-navbar">
+
+    <!-- Cancel Button -->
+
     <a href="{{ url_for('main.list_tasks') }}" class="nav-link">Cancel</a>
 </div>
 
@@ -11,6 +14,7 @@
     <form method="POST" action="{{ url_for('main.create_task') }}">
         {{ form.hidden_tag() }}
 
+        <!-- Title Field -->
         <div class="form-group">
             {{ form.title.label }} 
             {{ form.title(class="form-control", placeholder="Enter task title") }}
@@ -18,7 +22,8 @@
                 <small class="text-danger">{{ form.title.errors[0] }}</small>
             {% endif %}
         </div>
-
+        
+        <!-- Description Field -->
         <div class="form-group">
             {{ form.description.label }} 
             {{ form.description(class="form-control", placeholder="Enter task description") }}
@@ -27,6 +32,7 @@
             {% endif %}
         </div>
 
+        <!-- Hours Allocated Field -->
         <div class="form-group">
             {{ form.hours_allocated.label }} 
             {{ form.hours_allocated(class="form-control", placeholder="Enter hours allocated") }}
@@ -35,6 +41,7 @@
             {% endif %}
         </div>
 
+        <!-- Assigned To LookUp Field -->
         <div class="form-group">
             {{ form.assigned_to.label }} 
             {{ form.assigned_to(class="form-control") }}
@@ -42,7 +49,8 @@
                 <small class="text-danger">{{ form.assigned_to.errors[0] }}</small>
             {% endif %}
         </div>
-
+        
+        <!-- Status dropdown Field -->
         <div class="form-group">
             {{ form.status.label }} 
             {{ form.status(class="form-control") }}
@@ -51,6 +59,7 @@
             {% endif %}
         </div>
 
+         <!-- Hours Remaining dropdown Field -->
         <div class="form-group">
             {{ form.hours_remaining.label }} 
             {{ form.hours_remaining(class="form-control", placeholder="Enter hours remaining") }}
@@ -59,6 +68,7 @@
             {% endif %}
         </div>
 
+        <!-- Project lookup dropdown Field -->
         <div class="form-group">
             <label for="project_filter">Project</label>
             {{ form.project_id(class="form-control", id="project_filter") }}
@@ -68,12 +78,8 @@
         </div>
     
        
-        
+         <!-- Create Task button -->
         <button type="submit" class="btn btn-primary">Create Task</button>
     </form>
-{% endblock %}
 
-{% block scripts %}
-    <!-- Link to the external script.js file -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 {% endblock %}

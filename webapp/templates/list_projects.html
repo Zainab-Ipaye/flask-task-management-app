@@ -1,10 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- <h2 class="page-title">Projects</h2> -->
 
 <!-- Button to create a new project -->
 <a href="{{ url_for('main.create_project') }}" class="btn btn-primary">Create New Project</a>
+
+<div class="container">
+    <!-- Navbar for Add New Project -->
+    <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
+        <div class="container-fluid">
+            <!-- Align "Add New Project" button to the right -->
+        </div>
+    </nav>
+
+      <!-- Navbar for Filter List (Visible if projects count >= 1) -->
+      {% if projects|length >= 1 %}
+      <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
+          <div class="container-fluid">
+              <!-- Align "Filter List" button to the right -->
+              <div class="d-flex ms-auto">
+                  <button id="filter-toggle-btn" class="btn btn-primary">
+                      FILTER
+                  </button>
+              </div>
+          </div>
+      </nav>
+      {% endif %}
+
+      <form method="GET" action="{{ url_for('main.list_projects') }}" class="form-inline mb-4" id="filter-form" style="display: none;">
+        <div class="form-group">
+            <label for="project" class="mr-2">Project Name:</label>
+            <select name="project" id="project" class="form-control mr-4">
+                <option value="">All</option>
+                {% for project in projects %}
+                <option value="{{ project.id }}" {% if request.args.get('name') == project.id|string %}selected{% endif %}>
+                    {{ project.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status" class="mr-2">Status:</label>
+            <select name="status" id="status" class="form-control mr-4">
+                <option value="">All</option>
+                {% for status in projects|map(attribute='status')|unique %}
+                <option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>
+                    {{ status }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group ms-auto">
+            <button type="submit" class="btn btn-primary btn-lg">
+                Apply Filter
+            </button>
+        </div>
+    </form>
+
 
 <table class="styled-table">
     <thead>
@@ -13,7 +66,9 @@
             <th>Project Name</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <!-- <th>Actions</th> -->
+            <th>Status</th>
+            <th>Actions</th>
+
         </tr>
     </thead>
     <tbody>
@@ -23,18 +78,16 @@
             <td>{{ project.name }}</td>
             <td>{{ project.start_date.strftime('%Y-%m-%d') }}</td>
             <td>{{ project.end_date.strftime('%Y-%m-%d') }}</td>
+            <td><span class="badge {{ project.status|lower|replace(' ', '-') }}">{{ project.status }}</span></td>
+
             <td>
-                <!-- Edit link for each project -->
+                <!-- Edit & Delete link for each project -->
                 <a href="{{ url_for('main.edit_project', project_id=project.id) }}" style="color: #28a745; font-size: 20px; cursor: pointer;" title="Edit Project">
                     🖊️
                 </a>                <form action="{{ url_for('main.delete_project', project_id=project.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" style="border: none; background: transparent; color: #dc3545; cursor: pointer;" title="Delete Project", onclick="return confirm('Are you sure you want to delete this project?')">
+                    <button type="submit" style="border: none; background: transparent; color: #dc3545; cursor: pointer;" title="Delete Project", onclick="return confirm('Are you sure you want to delete this project? If yes, take note all associated tasks will also be deleted')">
                         🗑️
                     </button>
-                <!-- 
-                <form method="POST" action="{{ url_for('main.delete_project', project_id=project.id) }}" style="display:inline;">
-                    <button type="submit" class="btn-secondary" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
-                </form>Form for deleting the project -->
             </td>
         </tr>
         {% endfor %}

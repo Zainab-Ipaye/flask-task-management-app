@@ -3,6 +3,8 @@
 {% block content %}
 
 <div class="edit-navbar">
+    <!-- Cancel Button -->
+
     <a href="{{ url_for('main.list_projects') }}" class="nav-link">Cancel</a>
 </div>
 
@@ -17,6 +19,15 @@
         {{ form.name(class="form-control") }}
         {% if form.name.errors %}
             <small class="text-danger">{{ form.name.errors[0] }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Description Field -->
+    <div class="form-group">
+        {{ form.description.label }} 
+        {{ form.description(class="form-control", placeholder="Enter project description") }}
+        {% if form.description.errors %}
+            <small class="text-danger">{{ form.description.errors[0] }}</small>
         {% endif %}
     </div>
     
@@ -37,7 +48,17 @@
             <small class="text-danger">{{ form.end_date.errors[0] }}</small>
         {% endif %}
     </div>
-    
+
+    <!-- Status dropdown Field -->
+    <div class="form-group">
+        {{ form.status.label }} 
+        {{ form.status(class="form-control") }}
+        {% if form.status.errors %}
+            <small class="text-danger">{{ form.status.errors[0] }}</small>
+        {% endif %}
+    </div>
+
+    <!-- Submit button -->
     <button type="submit" class="btn btn-primary">Create Project</button>
 </form>
 
