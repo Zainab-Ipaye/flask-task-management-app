@@ -10,33 +10,12 @@ class Project(db.Model):
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
 
-    # Relationship with Sprint
-  #  sprints = db.relationship('Sprint', backref='parent_project', lazy=True)
     tasks = db.relationship('Task', backref='project', lazy=True)
 
 
     def __repr__(self):
         return f'<Project {self.name}>'
 
-#class Sprint(db.Model):
- #   __tablename__ = 'sprints'
-  #  id = db.Column(db.Integer, primary_key=True)
-   # name = db.Column(db.String(100), nullable=False)
-    #start_date = db.Column(db.Date, nullable=False)
-    #end_date = db.Column(db.Date, nullable=False)
-    
-    # Foreign key linking Sprint to Project
-    #project = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
-    #projectlookup = db.relationship('Project', foreign_keys=[project], backref='project_lookup')
-
-    #tasks = db.relationship('Task', backref='sprint', lazy=True)
-
-
-
-    #def __repr__(self):
-     #   return f'<Sprint {self.name}>'
-
-    
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -72,9 +51,6 @@ class Task(db.Model):
 
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)  
     projectlookupfortasks = db.relationship('Project', foreign_keys=[project_id], backref='project_lookup_for_tasks')
-
-   # sprint_id = db.Column(db.Integer, db.ForeignKey('sprints.id'), nullable=True)  
-    #sprintlookup = db.relationship('Sprint', foreign_keys=[sprint_id], backref='tasks_in_sprint')
 
     # Relationship for creator (created_by) - specify the foreign key
     creator = db.relationship('User', foreign_keys=[created_by], backref='created_tasks')
