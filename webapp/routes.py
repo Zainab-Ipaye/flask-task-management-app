@@ -250,19 +250,23 @@ def delete_project(project_id):
 def list_projects():
 
     project_id = request.args.get('project', type=int)
-    status_id = request.args.get('project', type=int)
+    status = request.args.get('project')
     # Base query
-    projects_query = Project.query
+    query = Project.query
 
-    # Apply project_id filter if it exists
+    project_id = request.args.get('project')
+    status = request.args.get('status')
+
+    # Apply filters to the query
     if project_id:
-        projects_query = projects_query.filter(Project.id == project_id)
-    if status_id:
-        projects_query = projects_query.filter(Project.status == status_id)
+        query = query.filter(Project.id == int(project_id))  # Project filter as ID
+    if status:
+        query = query.filter(Project.status == status)  # Status filter as string
 
-
-    # Get all projects based on applied filters
-    projects = projects_query.all()
+    # Execute the query
+    projects = query.all()
+    
+    print(f"Filters applied: Project ID = {project_id}, Status = {status}")
     
 
     return render_template('list_projects.html', projects=projects )
