@@ -31,7 +31,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')  # Hash password with bcrypt
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password, role=form.role.data)
 
         # Add user to the database
         db.session.add(user)
@@ -41,7 +41,6 @@ def register():
 
     # If form submission is invalid or on initial page load, render the form again
     return render_template('register.html', form=form)
-
 
 
 

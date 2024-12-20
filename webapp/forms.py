@@ -35,6 +35,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
     password = PasswordField('Password', validators=[DataRequired("Password is required"), Length(min=8, message="Password must have at least 8 characters")])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(message="Please confirm your password."), EqualTo('password', message="Password must match")])
+    role  = SelectField('Role', choices=[('user'), ('admin')], default='user', validators=[DataRequired("Role is required")])
     submit = SubmitField('Sign Up')
 
 #Login Form Fields & Validation
