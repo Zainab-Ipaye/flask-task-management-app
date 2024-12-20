@@ -24,32 +24,26 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '';
 
 --
--- Table structure for table `user`
+-- Table structure for table `alembic_version`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `alembic_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(100) NOT NULL,
-  `email` varchar(120) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `alembic_version` (
+  `version_num` varchar(32) NOT NULL,
+  PRIMARY KEY (`version_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `alembic_version`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Zainab Ipaye','zipaye7@gmail.com','$2b$12$kwihzJt/Fv2ZVLamSpppTOstzlgq.W34axeGpe05A2/.IeMp0PmES','admin'),(4,'Tester0','Tester0@gmail.com','$2b$12$mqIqZeJHK0Pj/5bPO.P49ez.Fq6EI8Q1uvii.Faw4cpCC5nHpMdSW','user'),(5,'Maddy7','maddisonamy17@btinternet.com','$2b$12$PGQU2dQbgdaLr.obvdAwCOJ1OEARBU/xXWV3CgbkP2gkv2xIzI6Hq','admin'),(6,'Tester101.','Tester101@gmail.com','$2b$12$mVhhgWRilFzsyY/QoCgw7uzF2S7GDSSesucW6heWRWch8PVTZ8K/u','user');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `alembic_version` WRITE;
+/*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
+INSERT INTO `alembic_version` VALUES ('1479ed996c4e');
+/*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -62,4 +56,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-19 23:37:47
+-- Dump completed on 2024-12-20  0:38:12

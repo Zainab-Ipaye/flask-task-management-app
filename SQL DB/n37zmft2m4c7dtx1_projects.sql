@@ -38,7 +38,7 @@ CREATE TABLE `projects` (
   `status` varchar(50) NOT NULL DEFAULT 'Not Started',
   `description` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` VALUES (2,'FOI App','2025-03-03','2025-09-28','Not Started',''),(3,'Job Sheet App','2024-10-07','2025-01-15','Not Started',''),(4,'Library Book Management System','2025-01-02','2025-11-15','Not Started',''),(5,'Room Booking System','2025-01-10','2025-09-11','Not Started',''),(6,'Attendance Logging System','2025-03-01','2025-06-28','Not Started',''),(7,'Voucher Request App','2025-05-17','2025-10-12','Not Started',''),(8,'IT Logging System','2024-12-29','2025-06-28','Not Started',''),(9,'HR Ticket Logging System','2025-03-27','2025-04-19','Not Started',''),(10,'Task Management App','2024-10-01','2024-12-20','Not Started',''),(11,'TEST PROJECT 1','2024-12-20','2025-01-04','Not Started','');
+INSERT INTO `projects` VALUES (8,'IT Logging System','2024-12-29','2025-06-28','Not Started','TBC..'),(9,'HR Ticket Logging System','2025-03-27','2025-04-19','Not Started','TBC..'),(10,'Task Management App','2024-10-01','2024-12-20','Completed','The application is a task management app designed for small teams and solo developers. It allows users to create, assign and monitor tasks. The app is user-friendly with RBAC. The app is programmed using Python language, Flask for backend, JS and CSS for frontend.'),(11,'Reporting System','2025-01-03','2025-08-22','Not Started','TBC...'),(12,'Special Diets App','2025-02-07','2025-06-21','Not Started','TBC..'),(13,'FOI App','2024-12-01','2025-01-04','Not Started','TBC..'),(14,'Job Sheet App','2024-12-20','2025-07-05','In Progress','This app is created using Power Platform - Apps, Automates and BI\r\nThe solutions consists of a canvas app, model-driven app, a dozen Power Automate flow, a Power BI dashboard and js plugins/web resources'),(15,'Library Book Management System','2025-03-07','2025-06-21','Not Started','TBC..'),(16,'Room Booking System','2025-02-28','2025-08-23','Not Started','TBC..'),(17,'Attendance Logging System','2024-12-22','2025-04-05','Not Started','TBC..');
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -61,4 +61,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-19 23:37:46
+-- Dump completed on 2024-12-20  0:38:11
