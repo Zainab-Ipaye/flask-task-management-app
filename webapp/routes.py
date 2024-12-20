@@ -207,7 +207,7 @@ def create_project():
 
     return render_template('create_project.html', form=form)
 
-#Edit Task Route
+#Edit Project Route
 @bp.route('/project/<int:project_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_project(project_id):
@@ -216,17 +216,18 @@ def edit_project(project_id):
     form = ProjectForm(obj=project)  
     if form.validate_on_submit():
         project.name=form.name.data
-        project.description=form.name.description
+        project.description=form.description.data
         project.start_date=form.start_date.data
         project.end_date=form.end_date.data
         project.status=form.status.data
         db.session.commit()
+
         flash('Project updated successfully!', 'success')
         return redirect(url_for('main.list_projects'))
 
     return render_template('edit_project.html', form=form, project=project)
 
-#Delete Task Route
+#Delete Project Route
 @bp.route('/project/<int:project_id>/delete', methods=['POST'])
 @login_required
 def delete_project(project_id):
