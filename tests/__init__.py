@@ -22,38 +22,33 @@ csp = {
     'font-src': ["'self'", 'https://fonts.gstatic.com']
 }
 
-def create_app(test_config=None):
+def create_test_app(test_config=None):
     app = Flask(__name__)
     app.config.from_object('config.Config')
 
     # Use test config if provided (for unit tests)
     if test_config:
         app.config.update(test_config)
+    else:
+        app.config.from_object('config.Config')
 
-    # Enable CSRF protection
-    csrf.init_app(app)
 
     # Initialize core app services
     db.init_app(app)
     bcrypt.init_app(app)
     migrate.init_app(app, db)
+    csrf.init_app(app)
+
 
     # Setup user login manager
     login_manager = LoginManager()
     login_manager.init_app(app)
 
-    # Security Headers via Flask-Talisman
-    if os.environ.get("FLASK_ENV") == "development":
-        talisman.init_app(app, content_security_policy=csp, force_https=False)
-    else:
-        talisman.init_app(
-            app,
-            content_security_policy=csp,
-            force_https=True,
-            strict_transport_security=True,
-            session_cookie_secure=True,
-            frame_options='DENY'
-        )
+    login_manager.login_view = 'login.html'  
+    login_manager.login_message_category = 'info'
+
+    talisman.init_app(app, content_security_policy=csp, force_https=False)
+
 
     # User session loader
     from webapp.models import User
@@ -64,14 +59,5 @@ def create_app(test_config=None):
     # Register blueprints
     from webapp import routes
     app.register_blueprint(routes.bp)
-
-    # Custom error pages
-    @app.errorhandler(404)
-    def page_not_found(e):
-        return render_template('errors/404.html'), 404
-
-    @app.errorhandler(500)
-    def internal_server_error(e):
-        return render_template('errors/500.html'), 500
 
     return app

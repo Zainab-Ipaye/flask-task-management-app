@@ -45,21 +45,27 @@ def register():
 
 
 
+from flask import current_app
 
 
 # Login route 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
             log_activity("User logged in")
+            print("User logged in successfully")
             flash(f'Welcome, {current_user.username}!', 'success')
             return redirect(url_for('main.list_tasks'))
         else:
+            print('Login failed - bad credentials')
             flash('Login failed. Check email and/or password.', 'danger')
+    else:
+        print('Form validation errors:', form.errors)
     return render_template('login.html', form=form)
 
 
@@ -346,9 +352,18 @@ def update_profile():
 @login_required
 def manage_users():
 
-    username_filter = request.args.get('username', '').lower()
+    print("Current user in /admin/users:", current_user)
+    print("Is authenticated?", current_user.is_authenticated)
+    print("Role:", getattr(current_user, 'role', None))
     
+    if current_user.role != 'admin':
+        flash('You do not have permission to access this page.', 'danger')
+        return redirect(url_for('main.list_tasks'))
+
+
+    username_filter = request.args.get('username', '').lower()
     all_users = User.query.all()  # Fetch all users from the database
+
     if username_filter:
         users = [user for user in all_users if username_filter in user.username.lower()]
     else:

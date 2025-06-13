@@ -1,0 +1,4 @@
+# file: C:\Users\User\OneDrive\Documents\SEA Assignment L5\config.py
+# hypothesis_version: 6.135.9
+
+['SECRET_KEY', 'mydevkey', 'sqlite:///site.db']

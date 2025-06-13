@@ -57,24 +57,7 @@
     background-color: #4938b3;
 }
 
-/* Sleek, modern button style using existing color scheme */
-.btn-clean {
-    background: none;
-    border: none;
-    color: inherit;
-    font-weight: bold;
-    padding: 0.4em 0.75em;
-    font-size: 1rem;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.2s ease-in-out, color 0.2s;
-  }
   
-  .btn-clean:hover {
-    border-color: currentColor;
-    color: #333; /* or your chosen hover color */
-  }
-
   
 /* Centered Content for Smaller Screens */
 @media (max-width: 768px) {

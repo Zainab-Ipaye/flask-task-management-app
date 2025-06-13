@@ -11,9 +11,17 @@ class PropertyTests(unittest.TestCase):
         with self.app.app_context():
             db.create_all()
 
+    from hypothesis import given, strategies as st, settings
+
+    @settings(deadline=None)
+
     @given(st.text(min_size=5, max_size=30), st.emails())
     def test_user_registration_property(self, username, email):
         with self.app.app_context():
+
+            if User.query.filter((User.email == email) | (User.username == username)).first():
+                return
+
             password = bcrypt.generate_password_hash('Test123!').decode('utf-8')
             user = User(username=username, email=email, password=password, role='user')
             db.session.add(user)

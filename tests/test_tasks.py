@@ -2,6 +2,7 @@
 import unittest
 from webapp import create_app, db, bcrypt
 from webapp.models import User, Task
+from webapp.audit import log_activity
 
 class TaskTests(unittest.TestCase):
     def setUp(self):
@@ -30,6 +31,13 @@ class TaskTests(unittest.TestCase):
             description='This is a test task.'
         ), follow_redirects=True)
         self.assertIn(b'task has been created', response.data.lower())
+
+
+    def test_log_activity_writes_to_file(tmp_path):
+        log_file = tmp_path / "audit.log"
+        log_activity("TEST_EVENT", "testuser", "success", log_path=log_file)
+        assert log_file.read_text().startswith("[TEST_EVENT]")
+
 
     def tearDown(self):
         with self.app.app_context():

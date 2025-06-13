@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
- <a href="{{ url_for('main.create_task') }}" class="btn btn-primary">
-    CREATE NEW TASK
-</a>
+    <div class="edit-navbar">
+        <a href="{{ url_for('main.create_task') }}" class="nav-link">Create Task</a>
+    </div>
 
+ <!-- Navbar for Filter List (Visible if tasks count >= 1) -->
+ {% if tasks|length >= 1 %}
+ <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
+     <div class="container-fluid">
+         <!-- Align "Filter List" button to the right -->
+        <div class="d-flex ms-auto">
+        <a href="#" id="filter-toggle-btn" class="nav-link">Filter Tasks</a>
+        </div>
+     </div>
+ </nav>
+ {% endif %}
+
+ 
 <div class="container">
     <!-- Navbar for Add New Task -->
     <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
@@ -13,19 +26,6 @@
         </div>
     </nav>
 
-    <!-- Navbar for Filter List (Visible if tasks count >= 1) -->
-    {% if tasks|length >= 1 %}
-    <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
-        <div class="container-fluid">
-            <!-- Align "Filter List" button to the right -->
-            <div class="d-flex ms-auto">
-                <button id="filter-toggle-btn" class="btn btn-primary">
-                    FILTER
-                </button>
-            </div>
-        </div>
-    </nav>
-    {% endif %}
 
     <!-- Filter Form (Initially Hidden) -->
     <form method="GET" action="{{ url_for('main.list_tasks') }}" class="form-inline mb-4" id="filter-form" style="display: none;">
@@ -53,9 +53,7 @@
         </div>
         <!-- Apply Filter Button -->
         <div class="form-group ms-auto">
-            <button type="submit" class="btn btn-primary btn-lg">
-                Apply Filter
-            </button>
+            <button type="submit" class="nav-link" style="border: none; background: none;">Apply Filter</button>
         </div>
     </form>
 

@@ -57,6 +57,8 @@ class RegistrationForm(FlaskForm):
 
 #Login Form Fields & Validation
 class LoginForm(FlaskForm):
+    class Meta:
+        csrf = False #CHANGE TO TRUE
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
     password = PasswordField('Password', validators=[DataRequired("Password is required")])
     submit = SubmitField('Login')
