@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, SelectField, DateTimeField, DateField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, SelectField, DateTimeField, DateField, validators, ValidationError, BooleanField
 from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo, ValidationError
 from .models import User, Project #, Sprint
 from flask import current_app
+import re
 
 def coerce_to_int_or_none(value):
     if value is None or value == '':
@@ -29,19 +30,35 @@ class ProjectForm(FlaskForm):
         if self.start_date.data and field.data and field.data <= self.start_date.data:
             raise ValidationError("End Date must be after the Start Date.")
 
+
+def validate_password(form,field):
+        password=field.data
+        if len(password) < 8:
+            raise ValidationError('Password must be at least 8 characters long.')
+        if not re.search(r"\d", password):
+            raise ValidationError('Password must contain at least 1 number.')
+        if not re.search(r"[A-Z]", password):
+            raise ValidationError('Password must contain at least one upper case letter.')
+        if not re.search(r"[a-z]", password):
+            raise ValidationError('Password must contain at least one lower case letter.')
+        if not re.search(r"[!@#$%^&*(),.?\/:{}<>|]", password):
+            raise ValidationError('Password must contain at least one special character.')
+
+
 #Registration Form Fields & Validation
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired("Username is required"), Length(min=5, max=100, message="Username must be at least 5 characters.")])
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
-    password = PasswordField('Password', validators=[DataRequired("Password is required"), Length(min=8, message="Password must have at least 8 characters")])
+    password = PasswordField('Password', validators=[validators.DataRequired(), validate_password])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(message="Please confirm your password."), EqualTo('password', message="Password must match")])
     role  = SelectField('Role', choices=[('user'), ('admin')], default='user', validators=[DataRequired("Role is required")])
+    
     submit = SubmitField('Sign Up')
 
 #Login Form Fields & Validation
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
-    password = PasswordField('Password', validators=[DataRequired("Password is required"), Length(min=8, message="Password must have at least 8 characters")])
+    password = PasswordField('Password', validators=[DataRequired("Password is required")])
     submit = SubmitField('Login')
 
 #Task Form Fields & Validation

@@ -28,41 +28,37 @@
       {% endif %}
 
       <form method="GET" action="{{ url_for('main.list_projects') }}" class="form-inline mb-4" id="filter-form" style="display: none;">
+        <div class="form-group me-3">
+          <label for="project" class="me-2">Project Name:</label>
+          <select name="project" id="project" class="form-control">
+            <option value="">All</option>
+            {% for p in all_projects %}
+            <option value="{{ p.id }}" {% if project_id_filter == p.id %}selected{% endif %}>{{ p.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      
+        <div class="form-group me-3">
+          <label for="status" class="me-2">Status:</label>
+          <select name="status" id="status" class="form-control">
+            <option value="">All</option>
+            {% for status in all_statuses %}
+            <option value="{{ status }}" {% if status_filter == status %}selected{% endif %}>{{ status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      
         <div class="form-group">
-            <label for="project" class="mr-2">Project Name:</label>
-            <select name="project" id="project" class="form-control mr-4">
-                <option value="">All</option>
-                {% for project in projects %}
-                <option value="{{ project.id }}" {% if request.args.get('name') == project.id|string %}selected{% endif %}>
-                    {{ project.name }}
-                </option>
-                {% endfor %}
-            </select>
+          <button type="submit" class="btn btn-primary">Apply Filter</button>
         </div>
-        <div class="form-group">
-            <label for="status" class="mr-2">Status:</label>
-            <select name="status" id="status" class="form-control mr-4">
-                <option value="">All</option>
-                {% for status in projects|map(attribute='status')|unique %}
-                <option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>
-                    {{ status }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div class="form-group ms-auto">
-            <button type="submit" class="btn btn-primary btn-lg">
-                Apply Filter
-            </button>
-        </div>
-    </form>
+      </form>
+      
 
 
 <table class="styled-table">
     <thead>
         <tr>
-            <th>#</th>
+         <!---  <th>#</th> -->
             <th>Project Name</th>
             <th>Start Date</th>
             <th>End Date</th>
@@ -74,7 +70,7 @@
     <tbody>
         {% for project in projects %}
         <tr>
-            <td>{{ loop.index }}</td>
+           <!--- <td>{{ loop.index }}</td> -->
             <td>{{ project.name }}</td>
             <td>{{ project.start_date.strftime('%Y-%m-%d') }}</td>
             <td>{{ project.end_date.strftime('%Y-%m-%d') }}</td>
@@ -96,5 +92,27 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% if pagination.pages > 1 %}
+<nav aria-label="Project pagination">
+  <ul class="pagination justify-content-center mt-4">
+    {% if pagination.has_prev %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('main.list_projects', page=pagination.prev_num) }}">Previous</a>
+      </li>
+    {% endif %}
+    <li class="page-item disabled">
+      <span class="page-link">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+    </li>
+    {% if pagination.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('main.list_projects', page=pagination.next_num) }}">Next</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+  
 
 {% endblock %}

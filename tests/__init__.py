@@ -56,7 +56,7 @@ def create_app(test_config=None):
         )
 
     # User session loader
-    from .models import User
+    from webapp.models import User
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))

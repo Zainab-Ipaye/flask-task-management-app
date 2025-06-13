@@ -22,10 +22,12 @@
                 <li class="{% if request.endpoint == 'main.list_projects' %}active{% endif %}">
                     <a href="{{ url_for('main.list_projects') }}">Projects</a>
 
-                <!-- Make Manage Roles visible to all users (no conditional check for role) -->
+                <!--Makes manage roles tab invisible-->
+                {% if current_user.is_authenticated and current_user.role == 'admin' %}
                 <li class="{% if request.endpoint == 'main.manage_users' %}active{% endif %}">
                     <a href="{{ url_for('main.manage_users') }}">Manage Roles</a>
                 </li>
+                {% endif %}
 
                 <li class="{% if request.endpoint == 'main.profile' %}active{% endif %}">
                     <a href="{{ url_for('main.profile') }}">Profile</a>

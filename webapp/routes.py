@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user, current_user
-from webapp import db, bcrypt 
-from webapp.models import User, Task, Project #, Sprint
+from webapp import db, bcrypt
+from webapp.models import User, Task, Project, ActivityLog
+from webapp.audit import log_activity
 from webapp.forms import RegistrationForm, LoginForm, TaskForm, ProjectForm #, SprintForm
 
 
@@ -54,7 +55,7 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            #flash('Login successful', 'success')
+            log_activity("User logged in")
             flash(f'Welcome, {current_user.username}!', 'success')
             return redirect(url_for('main.list_tasks'))
         else:
@@ -69,6 +70,7 @@ def login():
 # Logout route
 @bp.route('/logout')
 def logout():
+    log_activity("User logged out")
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('main.home'))
@@ -95,14 +97,18 @@ def create_task():
             title=form.title.data,
             description=form.description.data,
             hours_allocated=form.hours_allocated.data,
-            status=form.status.data, 
+            status= form.status.data, 
             hours_remaining=form.hours_remaining.data, 
             assigned_to=form.assigned_to.data,
             project_id=form.project_id.data,
-            created_by=current_user.id)
+            created_by=current_user.id
+            )
         
         db.session.add(task)
         db.session.commit()
+
+        log_activity(f"Created task: {task.title}")
+
         flash('Your task has been created!', 'success')
         return redirect(url_for('main.list_tasks'))
     return render_template('create_task.html', form=form)
@@ -131,6 +137,8 @@ def edit_task(task_id):
         print(f"Task Updated: {task.title}, {task.project_id}")
 
         db.session.commit()
+        log_activity(f"Edited task: {task.title}")
+
         flash('Task updated successfully!', 'success')
         return redirect(url_for('main.list_tasks'))
     return render_template('edit_task.html', form=form, task=task) 
@@ -143,6 +151,9 @@ def delete_task(task_id):
     if current_user.role == 'admin':
         db.session.delete(task)
         db.session.commit()
+
+        log_activity(f"Deleted task: {task.title}")
+
         flash('Task has been deleted.', 'success')
     else:
         flash('You do not have permission to delete tasks.', 'danger')
@@ -152,6 +163,10 @@ def delete_task(task_id):
 @bp.route('/tasks', methods=['GET'])
 @login_required
 def list_tasks():
+    
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+
     assignee_id = request.args.get('assignee', type=int)
     project_id = request.args.get('project', type=int)
 
@@ -163,20 +178,25 @@ def list_tasks():
         tasks_query = tasks_query.filter(Task.assigned_to == assignee_id)
     if project_id:
         tasks_query = tasks_query.filter(Task.project_id == project_id)
+
+    pagination = tasks_query.paginate(page=page, per_page=per_page, error_out=False)
+    tasks = pagination.items
  
-    tasks = tasks_query.all()
-
-    # Fetch users and projects for the filters
-    users = User.query.all()
-    projects = Project.query.all()
-
     users_with_tasks = set(task.assignee for task in tasks if task.assignee)
     projects_with_tasks = set(task.project for task in tasks if task.project)
     
     users = User.query.filter(User.id.in_([user.id for user in users_with_tasks])).all()
     projects = Project.query.filter(Project.id.in_([project.id for project in projects_with_tasks])).all()
 
-    return render_template('list_tasks.html', tasks=tasks, users=users, projects=projects) 
+    #tasks = tasks_query.all()
+
+    
+    # Fetch users and projects for the filters
+    users = User.query.all()
+    projects = Project.query.all()
+
+    
+    return render_template('list_tasks.html', tasks=tasks, users=users, projects=projects, pagination=pagination) 
 
 
 
@@ -201,6 +221,8 @@ def create_project():
         db.session.add(project)
         db.session.commit()
 
+        log_activity(f"Created project: {project.name}")
+
         flash('Project created successfully!', 'success')
         return redirect(url_for('main.list_projects'))
 
@@ -221,6 +243,8 @@ def edit_project(project_id):
         project.status=form.status.data
         db.session.commit()
 
+        log_activity(f"Edited task: {project.name}")
+
         flash('Project updated successfully!', 'success')
         return redirect(url_for('main.list_projects'))
 
@@ -238,38 +262,48 @@ def delete_project(project_id):
         db.session.delete(project)
         db.session.commit()
 
+        log_activity(f"Deleted project: {project.name}")
+
         flash('Project has been deleted.', 'success')
     else:
         flash('You do not have permission to delete this project.', 'danger')
 
     return redirect(url_for('main.list_projects'))
 
+
 @bp.route('/projects', methods=['GET'])
 @login_required
 def list_projects():
 
-    project_id = request.args.get('project', type=int)
-    status = request.args.get('project')
-    # Base query
+    project_id_filter = request.args.get('project', type=int)
+    status_filter = request.args.get('status', type=str)
+
+    # Get all projects for filter dropdowns
+    all_projects = Project.query.order_by(Project.name).all()
+    all_statuses = list(set(p.status for p in all_projects))
+
+    # Build filtered query for results
     query = Project.query
+    if project_id_filter:
+        query = query.filter(Project.id == project_id_filter)
+    if status_filter:
+        query = query.filter(Project.status == status_filter)
 
-    project_id = request.args.get('project')
-    status = request.args.get('status')
+    # Pagination
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+    pagination = query.order_by(Project.start_date.desc()).paginate(page=page, per_page=per_page, error_out=False)
+    projects = pagination.items
 
-    # Apply filters to the query
-    if project_id:
-        query = query.filter(Project.id == int(project_id))  # Project filter as ID
-    if status:
-        query = query.filter(Project.status == status)  # Status filter as string
-
-    # Execute the query
-    projects = query.all()
-    
-    print(f"Filters applied: Project ID = {project_id}, Status = {status}")
-    
-
-    return render_template('list_projects.html', projects=projects )
-
+    return render_template(
+        'list_projects.html',
+        projects=projects,
+        pagination=pagination,
+        all_projects=all_projects,
+        all_statuses=all_statuses,
+        project_id_filter=project_id_filter,
+        status_filter=status_filter
+    )
 
 
 
@@ -293,6 +327,9 @@ def update_profile():
 
     # Commit the changes to the database
     db.session.commit()
+
+    log_activity("Updated profile")
+
     flash('Profile updated successfully', 'success')
 
     # Redirect to the profile page after updating
@@ -331,5 +368,8 @@ def update_role(user_id):
     user = User.query.get_or_404(user_id)
     user.role = request.form['role']
     db.session.commit()
+
+    log_activity("Updated role")
+
     flash('User role has been updated.', 'success')
     return redirect(url_for('main.manage_users'))

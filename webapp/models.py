@@ -26,8 +26,15 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(10), nullable=False, default='user')  
+
+    # One-to-many: A user can create many tasks
+    created_tasks = db.relationship('Task', foreign_keys='Task.created_by', backref='creator', lazy=True)
+
+    # One-to-many: A user can be assigned to many tasks
+    assigned_tasks = db.relationship('Task', foreign_keys='Task.assigned_to', backref='assignee', lazy=True)
+
     
-    tasks = db.relationship('Task', foreign_keys='Task.created_by', backref='author', lazy=True)
+    #tasks = db.relationship('Task', foreign_keys='Task.created_by', backref='author', lazy=True)
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -53,13 +60,26 @@ class Task(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  
 
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)  
-    projectlookupfortasks = db.relationship('Project', foreign_keys=[project_id], backref='project_lookup_for_tasks')
+    projectlookupfortasks = db.relationship('Project', foreign_keys=[project_id], overlaps="project,tasks")
 
     # Relationship for creator (created_by) - specify the foreign key
-    creator = db.relationship('User', foreign_keys=[created_by], backref='created_tasks')
+    #creator = db.relationship('User', foreign_keys=[created_by], backref='created_tasks')
     
     # Relationship for assignee (assigned_to) - specify the foreign key
-    assignee = db.relationship('User', foreign_keys=[assigned_to], backref='assigned_tasks')
+    #assignee = db.relationship('User', foreign_keys=[assigned_to], backref='assigned_tasks')
+
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+
 
     def __repr__(self):
         return f'<Task {self.title}>'
+
+
+class ActivityLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    action = db.Column(db.String(255), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user=db.relationship('User', backref='activity_logs')

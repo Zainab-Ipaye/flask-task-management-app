@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{{ url_for('main.create_task') }}" class="btn btn-primary">
+ <a href="{{ url_for('main.create_task') }}" class="btn btn-primary">
     CREATE NEW TASK
 </a>
 
@@ -63,7 +63,8 @@
     <table class="styled-table">
         <thead>
             <tr>
-                <th>#</th>
+                <!--   <th>#</th> -->
+
                 <th>Title</th>
                 <th>Status</th>
                 <th>Hours Remaining</th> 
@@ -75,7 +76,7 @@
         <tbody>
             {% for task in tasks %}
             <tr>
-                <td>{{ loop.index }}</td>
+              <!--   <td>{{ loop.index }}</td> -->
                 <td>{{ task.title }}</td>
                 <td><span class="badge {{ task.status|lower|replace(' ', '-') }}">{{ task.status }}</span></td>
                 <td>{{ task.hours_remaining }}</td>
@@ -97,4 +98,28 @@
     </table>
 
 </div>
+
+
+
+{% if pagination.pages > 1 %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      {% if pagination.has_prev %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('main.list_tasks', page=pagination.prev_num) }}">Previous</a>
+        </li>
+      {% endif %}
+      <li class="page-item disabled"><a class="page-link">Page {{ pagination.page }} of {{ pagination.pages }}</a></li>
+      {% if pagination.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for('main.list_tasks', page=pagination.next_num) }}">Next</a>
+        </li>
+
+
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
 {% endblock %}
+
