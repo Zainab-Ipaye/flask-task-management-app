@@ -13,8 +13,8 @@ def coerce_to_int_or_none(value):
 
 #Project Form Fields & Validation
 class ProjectForm(FlaskForm):
-    class Meta:
-        csrf = False #CHANGE TO TRUE
+   # class Meta:
+       # csrf = False #CHANGE TO TRUE
     name = StringField('Project Name', validators=[DataRequired("Name is required"), Length(min=5, max=100, message="Username must be at least 5 characters.")])
     description = TextAreaField('Description', validators=[DataRequired("Description is required"), Length(min=5, max=1000, message="Description must have at least 5 characters and must not exceed 1000 characters")])
     start_date = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired("Start Date is required")])
@@ -59,16 +59,16 @@ class RegistrationForm(FlaskForm):
 
 #Login Form Fields & Validation
 class LoginForm(FlaskForm):
-    class Meta:
-        csrf = False #CHANGE TO TRUE
+   # class Meta:
+    #    csrf = False #CHANGE TO TRUE
     email = StringField('Email', validators=[DataRequired("Email is required"), Email(message="Invalid email address.")])
     password = PasswordField('Password', validators=[DataRequired("Password is required")])
     submit = SubmitField('Login')
 
 #Task Form Fields & Validation
 class TaskForm(FlaskForm):
-    class Meta:
-        csrf = False #CHANGE TO TRUE
+   # class Meta:
+    #    csrf = False #CHANGE TO TRUE
     title = StringField('Task Title', validators=[DataRequired("Title is required"), Length(min=5, max=100, message="Title must have at least 5 characters")])
     description = TextAreaField('Description', validators=[DataRequired("Description is required"), Length(min=5, max=1000, message="Description must have at least 5 characters and must not exceed 1000 characters")])
     hours_allocated = IntegerField('Hours Allocated', validators=[DataRequired("Hours Allocated is required")])
