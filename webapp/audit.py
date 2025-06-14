@@ -8,3 +8,5 @@ def log_activity(action_desc):
         log = ActivityLog(user_id=current_user.id, action=action_desc)
         db.session.add(log)
         db.session.commit()
+
+

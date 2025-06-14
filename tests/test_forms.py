@@ -1,6 +1,6 @@
 import unittest
 from webapp import create_app
-from webapp.forms import RegistrationForm, ProjectForm, TaskForm
+from webapp.forms import RegistrationForm, ProjectForm, TaskForm, LoginForm
 
 
 class FormValidationTests(unittest.TestCase):
@@ -28,6 +28,78 @@ class FormValidationTests(unittest.TestCase):
             })
             self.assertFalse(form.validate())
             self.assertIn('Role is required', form.role.errors)
+
+    def test_valid_registration_form(self):
+        with self.app.test_request_context():
+            form = RegistrationForm(data={
+                'username': 'validuser',
+                'email': 'valid@example.com',
+                'password': 'StrongPass123!',
+                'confirm_password': 'StrongPass123!',
+                'role': 'user'
+            })
+            self.assertTrue(form.validate())
+
+    def test_login_form(self):
+        with self.app.test_request_context():
+            form = LoginForm(data={
+                'email': 'valid@example.com',
+                'password': 'StrongPass123!'
+            })
+            self.assertTrue(form.validate())
+
+    def test_invalid_email_format(self):
+        with self.app.test_request_context():
+            form = RegistrationForm(data={
+                'username': 'user4',
+                'email': 'not-an-email',
+                'password': 'Pass123!',
+                'confirm_password': 'Pass123!',
+                'role': 'user'
+            })
+            self.assertFalse(form.validate())
+            self.assertIn('Invalid email address.', form.email.errors)
+
+    def test_project_start_after_end(self):
+        with self.app.test_request_context():
+            form = ProjectForm(data={
+                'name': 'Test Project',
+                'description': 'Logic check',
+                'start_date': '2025-12-01',
+                'end_date': '2025-01-01',  # Start > End
+                'status': 'In Progress'
+            })
+            self.assertFalse(form.validate())
+
+
+    def test_task_form_missing_title(self):
+        with self.app.test_request_context():
+            form = TaskForm()
+            
+            form.status.choices = [('New', 'New'), ('In Progress', 'In Progress'), ('Completed', 'Completed'), ('Removed', 'Removed')]
+            
+            form.project_id.choices = [
+            ('1', 'Project 1'),
+            ('2', 'Project 2')
+        ]
+            form.assigned_to.choices = [
+            ('1', 'Tester'),
+            ('2', 'Developer')
+        ]
+    
+            form.process(data={
+                'title': '',
+                'description': 'Do something',
+                'hours_allocated': '6',
+                'status': 'New',
+                'assigned_to': '1',
+                'project_id': '1',
+                'hours_remaining':'6'
+            })
+
+            self.assertFalse(form.validate())
+            self.assertIn('Title is required', form.title.errors)
+
 
 
     def test_password_mismatch(self):

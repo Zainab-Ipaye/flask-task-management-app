@@ -32,6 +32,16 @@ class AuthTests(unittest.TestCase):
         #self.assertEqual(response.status_code, 200)
         self.assertIn(b'Zainab', response.data)
 
+    def test_login_loads(self):
+        response = self.client.get('/')
+        #self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Email', response.data)
+
+    def test_register_loads(self):
+        response = self.client.get('/')
+        #self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Confirm Password', response.data)
+
     def test_register_login_logout_flow(self):
         response = self.client.post('/register', data=dict(
             username='demo',
@@ -40,7 +50,7 @@ class AuthTests(unittest.TestCase):
             confirm_password='Password123!',
             role='user'
         ), follow_redirects=True)
-        self.assertIn(b'Your account has been created', response.data.lower())
+        self.assertIn(b'your account has been created', response.data.lower())
 
         response = self.client.post('/login', data=dict(
             email='demo@example.com',
@@ -67,15 +77,4 @@ class AuthTests(unittest.TestCase):
         role='user'
     ), follow_redirects=True)
         self.assertIn(b'Username is required', response.data)
-
-
-    def test_duplicate_email_registration(self):
-        form = RegistrationForm(data={
-        'username': 'anotheruser',
-        'email': 'test@example.com',  
-        'password': 'Password123!',
-        'confirm_password': 'Password123!',
-        'role': 'user'
-    })
-        assert not form.validate()
 

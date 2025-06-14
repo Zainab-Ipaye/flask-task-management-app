@@ -43,11 +43,6 @@ def register():
     # If form submission is invalid or on initial page load, render the form again
     return render_template('register.html', form=form)
 
-
-
-from flask import current_app
-
-
 # Login route 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():

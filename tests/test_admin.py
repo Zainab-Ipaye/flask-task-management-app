@@ -1,75 +1,64 @@
 import unittest
+from flask import session
 from webapp import create_app, db, bcrypt
 from webapp.models import User
 
-
-
 class AdminRouteTests(unittest.TestCase):
+
     def setUp(self):
         self.app = create_app({
             'TESTING': True,
-            'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
             'WTF_CSRF_ENABLED': False,
-            'SECRET_KEY': 'testkey'
+            'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+            'SECRET_KEY': 'test_secret_key'
         })
-        print("CSRF enabled:", self.app.config['WTF_CSRF_ENABLED']) 
 
         self.app_context = self.app.app_context()
         self.app_context.push()
-
-        db.drop_all()
         db.create_all()
 
         self.client = self.app.test_client()
-        self.register_accounts()  
+        self.admin = self.create_user('admin', 'admin@example.com', 'AdminPass123!', 'admin')
+        self.user = self.create_user('user', 'user@example.com', 'UserPass123!', 'user')
 
-
-    def register_accounts(self):
-        hashed_admin_pw = bcrypt.generate_password_hash('AdminPass123!').decode('utf-8')
-        hashed_user_pw = bcrypt.generate_password_hash('UserPass123!').decode('utf-8')
-
-
-        admin = User(username='admin', email='admin@example.com', password=hashed_admin_pw, role='admin')
-        user = User(username='user', email='user@example.com', password=hashed_user_pw, role='user')
-
-        db.session.add(admin)
+    def create_user(self, username, email, password, role):
+        hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = User(username=username, email=email, password=hashed_pw, role=role)
         db.session.add(user)
         db.session.commit()
+        return user
 
-
-    def login(self, email, password):
-        #with self.client:
-            response = self.client.post('/login', data={
-                'email': email,
-                'password': password,
-                'submit': True  
-            }, follow_redirects=True)
-
-            print("Login response status:", response.status_code)
-            print(response.data.decode())
-            self.assertIn(b'Task', response.data)
-            return response
-
-
-    def test_non_admin_cannot_access_admin_users(self):
-        with self.client:
-            self.login('user@example.com', 'UserPass123!')
-            response = self.client.get('/admin/users', follow_redirects=True)
-            print("Response after unauthorized access:", response.data.decode())
-            self.assertIn( 'Unauthorized', response.get_data(as_text=True))
+    def login_as(self, user):
+        """Simulate a logged-in user by setting the session manually."""
+        with self.client.session_transaction() as sess:
+            sess['_user_id'] = str(user.id)
+            sess['_fresh'] = True
 
     def test_admin_can_access_admin_users(self):
-        with self.client :
+        self.login_as(self.admin)
+        response = self.client.get('/admin/users', follow_redirects=True)
+        print("Admin redirected response:", response.get_data(as_text=True))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'update role', response.data.lower())
 
-            self.login('admin@example.com', 'AdminPass123!')      
-            with self.app.app_context():
-                admin_user = User.query.filter_by(email='admin@example.com').first()
-                if admin_user:
-                    admin_user.role = 'Admin'
-                    db.session.commit()     
-            response = self.client.get('/admin/users', follow_redirects=True)
-            print("Admin Users Page HTML:", response.data.decode())  
-            self.assertIn('Update Role', response.get_data(as_text=True))
+
+    def test_user_cannot_access_admin_users(self):
+        self.login_as(self.user)
+        response = self.client.get('/admin/users', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'you do not have permission', response.data.lower())
+
+    def test_bypass_login_logic_still_blocks_unauthorized(self):
+        """Ensure no session = no access"""
+        response = self.client.get('/admin/users', follow_redirects=True)
+        self.assertEqual(response.status_code, 401)
+        self.assertIn(b'unauthorized', response.data.lower())
+
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
 
 if __name__ == '__main__':
     unittest.main()
