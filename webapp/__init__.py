@@ -30,6 +30,10 @@ def create_app(test_config=None):
     if test_config:
         app.config.update(test_config)
 
+
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
     # Enable CSRF protection
     csrf.init_app(app)
 
