@@ -29,4 +29,6 @@ EXPOSE 5000
 
 # Launch app using gunicorn (recommended for Heroku)
 # Replace run:app with your correct entry point, e.g., app.py => app:app
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]
+
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:$PORT run:app"]
+#CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]
