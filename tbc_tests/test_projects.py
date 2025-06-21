@@ -21,7 +21,7 @@ class ProjectTests(unittest.TestCase):
         db.create_all()
         self.client = self.app.test_client()
 
-        # Create test users
+# Create test users
         self.user = self.create_user("user", "user@example.com", "UserPass123!", "user")
         self.admin = self.create_user(
             "admin", "admin@example.com", "AdminPass123!", "admin"
@@ -56,7 +56,7 @@ class ProjectTests(unittest.TestCase):
                 "start_date": "01-06-2024",
                 "end_date": "01-09-2024",
                 "status": "In Progress",
-                #'submit': 'Create Project'
+#'submit': 'Create Project'
             },
             follow_redirects=True,
         )
@@ -96,7 +96,7 @@ class ProjectTests(unittest.TestCase):
             self.assertEqual(updated_project.name, "Updated Project")
 
     def test_delete_project(self):
-        self.login_as(self.admin)  # Only admin can delete
+        self.login_as(self.admin)  
 
         with self.app_context:
             project = Project(
