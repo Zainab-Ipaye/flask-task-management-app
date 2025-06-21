@@ -343,3 +343,4 @@ Flask-WTF - https://flask-wtf.readthedocs.io/en/1.2.x/
 
 Bandit Security Scanner - https://bandit.readthedocs.io/en/latest/
 
+BFG ran to clear commit history containing sensitive info, APIs ad secrets replaced.
