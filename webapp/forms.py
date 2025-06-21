@@ -215,4 +215,3 @@ class TaskForm(FlaskForm):
             self.project_id.choices = [(None, "Select Project")] + [
                 (project.id, project.name) for project in Project.query.all()
             ]
-
