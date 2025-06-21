@@ -1,0 +1,4 @@
+# file: C:\Users\User\OneDrive\Documents\SEA Assignment L5\webapp\forms.py
+# hypothesis_version: 6.135.9
+
+[100, 1000, '%Y-%m-%d', 'Assigned To', 'Completed', 'Confirm Password', 'Create Project', 'Create Task', 'Description', 'Email', 'Email is required', 'End Date', 'End Date is required', 'Hours Allocated', 'Hours Remaining', 'In Progress', 'Login', 'Name is required', 'New', 'Not Started', 'Password', 'Password is required', 'Password must match', 'Project', 'Project Name', 'Project is required', 'Removed', 'Role', 'Role is required', 'Select Project', 'Select User', 'Sign Up', 'Start Date', 'Status', 'Status is required', 'Task Title', 'Title is required', 'Username', 'Username is required', '[A-Z]', '[a-z]', '\\d', 'admin', 'new', 'password', 'user']

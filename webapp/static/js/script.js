@@ -67,6 +67,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleLink = document.getElementById('toggle-profile-form-link');
+    const profileForm = document.getElementById('profile-form');
+
+    toggleLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (profileForm.style.display === 'none' || profileForm.style.display === '') {
+            profileForm.style.display = 'block';
+            toggleLink.textContent = 'Hide Edit Profile Form';
+        } else {
+            profileForm.style.display = 'none';
+            toggleLink.textContent = 'Show Edit Profile Form';
+        }
+    });
+
+    // Confirmation before submitting update form
+    const updateForm = document.getElementById('profile-update-form');
+    updateForm.addEventListener('submit', (e) => {
+        if (!confirm('Are you sure you want to update your profile?')) {
+            e.preventDefault();
+        }
+    });
+});
 
 
 

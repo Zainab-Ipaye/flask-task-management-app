@@ -247,6 +247,9 @@ def create_project():
 
         flash("Project created successfully!", "success")
         return redirect(url_for("main.list_projects"))
+    else:
+        if form.errors:
+            print("Form errors:", form.errors)
 
     return render_template("create_project.html", form=form)
 
@@ -270,6 +273,9 @@ def edit_project(project_id):
 
         flash("Project updated successfully!", "success")
         return redirect(url_for("main.list_projects"))
+    else: 
+        if form.errors:
+            print("Form errors:", form.errors)
 
     return render_template("edit_project.html", form=form, project=project)
 
