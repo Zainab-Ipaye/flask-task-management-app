@@ -8,7 +8,7 @@ from webapp.forms import (
     LoginForm,
     TaskForm,
     ProjectForm,
-)  
+)
 
 
 bp = Blueprint("main", __name__)

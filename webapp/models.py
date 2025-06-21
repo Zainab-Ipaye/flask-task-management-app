@@ -3,7 +3,6 @@ from webapp import db, bcrypt
 from flask_login import UserMixin
 
 
-
 class Project(db.Model):
     __tablename__ = "projects"
     id = db.Column(db.Integer, primary_key=True)
@@ -83,5 +82,4 @@ class ActivityLog(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     action = db.Column(db.String(255), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
     user = db.relationship("User", backref="activity_logs")

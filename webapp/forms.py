@@ -8,7 +8,6 @@ from wtforms import (
     SelectField,
     DateField,
     validators,
-    ValidationError,
 )
 from wtforms.validators import (
     DataRequired,
@@ -18,7 +17,7 @@ from wtforms.validators import (
     EqualTo,
     ValidationError,
 )
-from .models import User, Project 
+from .models import User, Project
 from flask import current_app
 import re
 
@@ -205,7 +204,7 @@ class TaskForm(FlaskForm):
 
     submit = SubmitField("Create Task")
 
-    # Setting Up Assigned To Lookup Field
+    # Setting Up Assigned To and Project Lookup Field
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         with current_app.app_context():
@@ -213,12 +212,6 @@ class TaskForm(FlaskForm):
             self.assigned_to.choices = [(None, "Select User")] + [
                 (user.id, user.username) for user in User.query.all()
             ]
-
-    # Setting Up Project Lookup Field
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        with current_app.app_context():
-
             self.project_id.choices = [(None, "Select Project")] + [
                 (project.id, project.name) for project in Project.query.all()
             ]
