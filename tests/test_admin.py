@@ -1,5 +1,4 @@
 import unittest
-from flask import session
 from webapp import create_app, db, bcrypt
 from webapp.models import User
 

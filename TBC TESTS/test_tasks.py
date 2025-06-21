@@ -3,10 +3,9 @@ from datetime import date
 
 import unittest
 from webapp import create_app, db, bcrypt
-from webapp.models import User, Task, Project
+from webapp.models import User, Project
 from webapp.audit import log_activity
 import os
-from flask_login import current_user, AnonymousUserMixin
 
 
 class TaskTests(unittest.TestCase):

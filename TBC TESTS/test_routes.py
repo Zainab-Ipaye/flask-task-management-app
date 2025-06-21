@@ -2,7 +2,6 @@
 import unittest
 from webapp import create_app, db, bcrypt
 from webapp.models import User
-from webapp.forms import RegistrationForm
 
 
 class AuthTests(unittest.TestCase):

@@ -1,6 +1,5 @@
 # tests/test_properties.py
 import unittest
-from hypothesis import given, strategies as st
 from webapp import create_app, db, bcrypt
 from webapp.models import User
 

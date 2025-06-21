@@ -3,8 +3,6 @@ from webapp import db, bcrypt
 from flask_login import UserMixin
 
 
-##DB SCHEMA
-
 
 class Project(db.Model):
     __tablename__ = "projects"

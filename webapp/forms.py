@@ -6,11 +6,9 @@ from wtforms import (
     TextAreaField,
     IntegerField,
     SelectField,
-    DateTimeField,
     DateField,
     validators,
     ValidationError,
-    BooleanField,
 )
 from wtforms.validators import (
     DataRequired,
@@ -20,7 +18,7 @@ from wtforms.validators import (
     EqualTo,
     ValidationError,
 )
-from .models import User, Project  # , Sprint
+from .models import User, Project 
 from flask import current_app
 import re
 

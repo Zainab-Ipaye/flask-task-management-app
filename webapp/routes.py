@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user, current_user
 from webapp import db, bcrypt
-from webapp.models import User, Task, Project, ActivityLog
+from webapp.models import User, Task, Project
 from webapp.audit import log_activity
 from webapp.forms import (
     RegistrationForm,
     LoginForm,
     TaskForm,
     ProjectForm,
-)  # , SprintForm
+)  
 
 
 bp = Blueprint("main", __name__)
