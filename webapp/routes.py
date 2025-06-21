@@ -273,7 +273,7 @@ def edit_project(project_id):
 
         flash("Project updated successfully!", "success")
         return redirect(url_for("main.list_projects"))
-    else: 
+    else:
         if form.errors:
             print("Form errors:", form.errors)
 
