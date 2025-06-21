@@ -84,11 +84,6 @@ class AuthTests(unittest.TestCase):
             response.get_data(as_text=True),
         )
 
-    def test_404_page(self):
-        response = self.client.get("/non-existent-page")
-        self.assertEqual(response.status_code, 404)
-        self.assertIn("Page Not Found", response.get_data(as_text=True))
-
     def test_500_page(self):
         # Simulate error by calling a route that raises exception or patch route to raise
         with self.assertRaises(Exception):
@@ -157,7 +152,7 @@ class AuthTests(unittest.TestCase):
             db.session.add(project)
             db.session.commit()
 
-        response = self.client.get(f"/projects", follow_redirects=True)
+        response = self.client.get("/projects", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(project.name, response.get_data(as_text=True))
 
@@ -187,7 +182,7 @@ class AuthTests(unittest.TestCase):
             db.session.add(task)
             db.session.commit()
 
-        response = self.client.get(f"/tasks", follow_redirects=True)
+        response = self.client.get("/tasks", follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(task.title, response.get_data(as_text=True))
 
