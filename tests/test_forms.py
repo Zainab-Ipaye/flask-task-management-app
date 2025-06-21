@@ -5,11 +5,13 @@ from webapp.forms import RegistrationForm, ProjectForm, TaskForm, LoginForm
 
 class FormValidationTests(unittest.TestCase):
     def setUp(self):
-        self.app = create_app({
-            'TESTING': True,
-            'WTF_CSRF_ENABLED': False,  # Optional if disabling CSRF
-            'SECRET_KEY': 'testkey'
-        })
+        self.app = create_app(
+            {
+                "TESTING": True,
+                "WTF_CSRF_ENABLED": False,  # Optional if disabling CSRF
+                "SECRET_KEY": "testkey",
+            }
+        )
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
@@ -19,124 +21,134 @@ class FormValidationTests(unittest.TestCase):
 
     def test_valid_form(self):
         with self.app.test_request_context():
-            form = RegistrationForm(data={
-                'username': 'newuser',
-                'email': 'newuser@example.com',
-                'password': 'Testpass123!',
-                'confirm_password': 'Testpass123!',
-                'role': ' '
-            })
+            form = RegistrationForm(
+                data={
+                    "username": "newuser",
+                    "email": "newuser@example.com",
+                    "password": "Testpass123!",
+                    "confirm_password": "Testpass123!",
+                    "role": " ",
+                }
+            )
             self.assertFalse(form.validate())
-            self.assertIn('Role is required', form.role.errors)
+            self.assertIn("Role is required", form.role.errors)
 
     def test_valid_registration_form(self):
         with self.app.test_request_context():
-            form = RegistrationForm(data={
-                'username': 'validuser',
-                'email': 'valid@example.com',
-                'password': 'StrongPass123!',
-                'confirm_password': 'StrongPass123!',
-                'role': 'user'
-            })
+            form = RegistrationForm(
+                data={
+                    "username": "validuser",
+                    "email": "valid@example.com",
+                    "password": "StrongPass123!",
+                    "confirm_password": "StrongPass123!",
+                    "role": "user",
+                }
+            )
             self.assertTrue(form.validate())
 
     def test_login_form(self):
         with self.app.test_request_context():
-            form = LoginForm(data={
-                'email': 'valid@example.com',
-                'password': 'StrongPass123!'
-            })
+            form = LoginForm(
+                data={"email": "valid@example.com", "password": "StrongPass123!"}
+            )
             self.assertTrue(form.validate())
 
     def test_invalid_email_format(self):
         with self.app.test_request_context():
-            form = RegistrationForm(data={
-                'username': 'user4',
-                'email': 'not-an-email',
-                'password': 'Pass123!',
-                'confirm_password': 'Pass123!',
-                'role': 'user'
-            })
+            form = RegistrationForm(
+                data={
+                    "username": "user4",
+                    "email": "not-an-email",
+                    "password": "Pass123!",
+                    "confirm_password": "Pass123!",
+                    "role": "user",
+                }
+            )
             self.assertFalse(form.validate())
-            self.assertIn('Invalid email address.', form.email.errors)
+            self.assertIn("Invalid email address.", form.email.errors)
 
     def test_project_start_after_end(self):
         with self.app.test_request_context():
-            form = ProjectForm(data={
-                'name': 'Test Project',
-                'description': 'Logic check',
-                'start_date': '2025-12-01',
-                'end_date': '2025-01-01',  # Start > End
-                'status': 'In Progress'
-            })
+            form = ProjectForm(
+                data={
+                    "name": "Test Project",
+                    "description": "Logic check",
+                    "start_date": "2025-12-01",
+                    "end_date": "2025-01-01",  # Start > End
+                    "status": "In Progress",
+                }
+            )
             self.assertFalse(form.validate())
-
 
     def test_task_form_missing_title(self):
         with self.app.test_request_context():
             form = TaskForm()
-            
-            form.status.choices = [('New', 'New'), ('In Progress', 'In Progress'), ('Completed', 'Completed'), ('Removed', 'Removed')]
-            
-            form.project_id.choices = [
-            ('1', 'Project 1'),
-            ('2', 'Project 2')
-        ]
-            form.assigned_to.choices = [
-            ('1', 'Tester'),
-            ('2', 'Developer')
-        ]
-    
-            form.process(data={
-                'title': '',
-                'description': 'Do something',
-                'hours_allocated': '6',
-                'status': 'New',
-                'assigned_to': '1',
-                'project_id': '1',
-                'hours_remaining':'6'
-            })
+
+            form.status.choices = [
+                ("New", "New"),
+                ("In Progress", "In Progress"),
+                ("Completed", "Completed"),
+                ("Removed", "Removed"),
+            ]
+
+            form.project_id.choices = [("1", "Project 1"), ("2", "Project 2")]
+            form.assigned_to.choices = [("1", "Tester"), ("2", "Developer")]
+
+            form.process(
+                data={
+                    "title": "",
+                    "description": "Do something",
+                    "hours_allocated": "6",
+                    "status": "New",
+                    "assigned_to": "1",
+                    "project_id": "1",
+                    "hours_remaining": "6",
+                }
+            )
 
             self.assertFalse(form.validate())
-            self.assertIn('Title is required', form.title.errors)
-
-
+            self.assertIn("Title is required", form.title.errors)
 
     def test_password_mismatch(self):
         with self.app.test_request_context():
-            form = RegistrationForm(data={
-                'username': 'user2',
-                'email': 'user2@example.com',
-                'password': 'pass1',
-                'confirm_password': 'pass2',
-                'role': 'user'
-            })
+            form = RegistrationForm(
+                data={
+                    "username": "user2",
+                    "email": "user2@example.com",
+                    "password": "pass1",
+                    "confirm_password": "pass2",
+                    "role": "user",
+                }
+            )
             self.assertFalse(form.validate())
-            self.assertIn('Password must match', form.confirm_password.errors)
+            self.assertIn("Password must match", form.confirm_password.errors)
 
     def test_missing_email(self):
         with self.app.test_request_context():
-            form = RegistrationForm(data={
-                'username': 'user3',
-                'email': '',
-                'password': 'pass',
-                'confirm_password': 'pass',
-                'role': 'user'
-            })
+            form = RegistrationForm(
+                data={
+                    "username": "user3",
+                    "email": "",
+                    "password": "pass",
+                    "confirm_password": "pass",
+                    "role": "user",
+                }
+            )
             self.assertFalse(form.validate())
-            self.assertIn('Email is required', form.email.errors)
+            self.assertIn("Email is required", form.email.errors)
 
     def test_missing_projectname(self):
         with self.app.test_request_context():
-            form = ProjectForm(data={
-                'name': '',
-                'description': 'this project is a test',
-                'start_date': '2024-12-01',
-                'end_date': '2025-9-01',
-                'status':'In Progress'
-            })
+            form = ProjectForm(
+                data={
+                    "name": "",
+                    "description": "this project is a test",
+                    "start_date": "2024-12-01",
+                    "end_date": "2025-9-01",
+                    "status": "In Progress",
+                }
+            )
             print(form.name.errors)
 
             self.assertFalse(form.validate())
-            self.assertIn('Name is required', form.name.errors)
-     
+            self.assertIn("Name is required", form.name.errors)

@@ -16,22 +16,23 @@ talisman = Talisman()
 
 # Define a secure Content Security Policy
 csp = {
-    'default-src': ["'self'"],
-    'script-src': ["'self'", 'https://cdn.jsdelivr.net'],
-    'style-src': ["'self'", 'https://cdn.jsdelivr.net', 'https://fonts.googleapis.com'],
-    'font-src': ["'self'", 'https://fonts.gstatic.com']
+    "default-src": ["'self'"],
+    "script-src": ["'self'", "https://cdn.jsdelivr.net"],
+    "style-src": ["'self'", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com"],
+    "font-src": ["'self'", "https://fonts.gstatic.com"],
 }
+
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.config.from_object('config.Config')
+    app.config.from_object("config.Config")
 
     # Use test config if provided (for unit tests)
     if test_config:
         app.config.update(test_config)
 
-
     from werkzeug.middleware.proxy_fix import ProxyFix
+
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
     # Enable CSRF protection
@@ -56,26 +57,28 @@ def create_app(test_config=None):
             force_https=True,
             strict_transport_security=True,
             session_cookie_secure=True,
-            frame_options='DENY'
+            frame_options="DENY",
         )
 
     # User session loader
     from .models import User
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
 
     # Register blueprints
     from webapp import routes
+
     app.register_blueprint(routes.bp)
 
     # Custom error pages
     @app.errorhandler(404)
     def page_not_found(e):
-        return render_template('errors/404.html'), 404
+        return render_template("errors/404.html"), 404
 
     @app.errorhandler(500)
     def internal_server_error(e):
-        return render_template('errors/500.html'), 500
+        return render_template("errors/500.html"), 500
 
     return app

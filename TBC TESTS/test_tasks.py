@@ -8,28 +8,33 @@ from webapp.audit import log_activity
 import os
 from flask_login import current_user, AnonymousUserMixin
 
+
 class TaskTests(unittest.TestCase):
     def setUp(self):
-        self.app = create_app({
-            'TESTING': True,
-            'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-            'WTF_CSRF_ENABLED': False,
-            'SECRET_KEY': 'testkey'
-        })
+        self.app = create_app(
+            {
+                "TESTING": True,
+                "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+                "WTF_CSRF_ENABLED": False,
+                "SECRET_KEY": "testkey",
+            }
+        )
         self.client = self.app.test_client()
 
         with self.app.app_context():
             db.create_all()
-            hashed = bcrypt.generate_password_hash('pass1234').decode('utf-8')
-            user = User(username='test', email='test@test.com', password=hashed, role='user')
+            hashed = bcrypt.generate_password_hash("pass1234").decode("utf-8")
+            user = User(
+                username="test", email="test@test.com", password=hashed, role="user"
+            )
             db.session.add(user)
 
             project = Project(
-                name='Test Project',
-                description='desc',
+                name="Test Project",
+                description="desc",
                 start_date=date(2024, 1, 1),
                 end_date=date(2024, 12, 31),
-                status='Active'
+                status="Active",
             )
             db.session.add(project)
             db.session.commit()
@@ -38,7 +43,7 @@ class TaskTests(unittest.TestCase):
 
     def test_create_task(self):
         with self.app.app_context():
-            user = User.query.filter_by(email='test@test.com').first()
+            user = User.query.filter_by(email="test@test.com").first()
 
             # Bypass login by manually logging in the user
             @self.app.login_manager.request_loader
@@ -47,23 +52,26 @@ class TaskTests(unittest.TestCase):
 
             with self.client as client:
                 with client.session_transaction() as sess:
-                    sess['_user_id'] = str(user.id)
+                    sess["_user_id"] = str(user.id)
 
                 project = Project.query.first()
 
-                response = client.post('/tasks/create', data=dict(
-                    title='Test Task',
-                    description='This is a test task.',
-                    hours_allocated='5',
-                    status='In Progress',
-                    hours_remaining='5',
-                    assigned_to=user.id,
-                    project_id=project.id
-                ), follow_redirects=True)
+                response = client.post(
+                    "/tasks/create",
+                    data=dict(
+                        title="Test Task",
+                        description="This is a test task.",
+                        hours_allocated="5",
+                        status="In Progress",
+                        hours_remaining="5",
+                        assigned_to=user.id,
+                        project_id=project.id,
+                    ),
+                    follow_redirects=True,
+                )
 
                 print("CREATE TASK RESPONSE:\n", response.get_data(as_text=True))
-                self.assertIn(b'your task has been created', response.data.lower())
-
+                self.assertIn(b"your task has been created", response.data.lower())
 
     def test_log_activity_writes_to_file(self):
         log_file = "audit.log"
@@ -71,15 +79,14 @@ class TaskTests(unittest.TestCase):
             os.remove(log_file)
 
         try:
-            log_activity("TEST_EVENT")  
+            log_activity("TEST_EVENT")
         except Exception as e:
             print("Log activity failed:", e)
 
         self.assertTrue(os.path.exists(log_file))
-        with open(log_file, 'r') as f:
+        with open(log_file, "r") as f:
             contents = f.read()
             self.assertIn("[TEST_EVENT]", contents)
-
 
     def tearDown(self):
         with self.app.app_context():
