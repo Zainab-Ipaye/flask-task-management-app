@@ -1,10 +1,6 @@
 import unittest
-import os
-from types import SimpleNamespace
-from unittest.mock import patch
 from webapp import create_app, db, bcrypt
 from webapp.models import User, Task
-from webapp.audit import log_activity
 from datetime import datetime
 
 

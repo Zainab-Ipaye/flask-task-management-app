@@ -123,6 +123,72 @@ class FormValidationTests(unittest.TestCase):
             self.assertFalse(form.validate())
             self.assertIn("Password must match", form.confirm_password.errors)
 
+    def test_password_length(self):
+        with self.app.test_request_context():
+            form = RegistrationForm(
+                data={
+                    "username": "user2",
+                    "email": "user2@example.com",
+                    "password": "pass1",
+                    "confirm_password": "pass1",
+                    "role": "user",
+                }
+            )
+            self.assertFalse(form.validate())
+            self.assertIn(
+                "Password must be at least 8 characters long.", form.password.errors
+            )
+
+    def test_password_specialcharacter(self):
+        with self.app.test_request_context():
+            form = RegistrationForm(
+                data={
+                    "username": "user2",
+                    "email": "user2@example.com",
+                    "password": "pass10111",
+                    "confirm_password": "pass10111",
+                    "role": "user",
+                }
+            )
+            self.assertFalse(form.validate())
+            self.assertIn(
+                "Password must contain at least one upper case letter.",
+                form.password.errors,
+            )
+
+    def test_password_missing_number(self):
+        with self.app.test_request_context():
+            form = RegistrationForm(
+                data={
+                    "username": "user2",
+                    "email": "user2@example.com",
+                    "password": "Passwords",
+                    "confirm_password": "Passwords",
+                    "role": "user",
+                }
+            )
+            self.assertFalse(form.validate())
+            self.assertIn(
+                "Password must contain at least 1 number.", form.password.errors
+            )
+
+    def test_password_upper_case(self):
+        with self.app.test_request_context():
+            form = RegistrationForm(
+                data={
+                    "username": "user2",
+                    "email": "user2@example.com",
+                    "password": "Passwords1",
+                    "confirm_password": "Passwords1",
+                    "role": "user",
+                }
+            )
+            self.assertFalse(form.validate())
+            self.assertIn(
+                "Password must contain at least one special character.",
+                form.password.errors,
+            )
+
     def test_missing_email(self):
         with self.app.test_request_context():
             form = RegistrationForm(

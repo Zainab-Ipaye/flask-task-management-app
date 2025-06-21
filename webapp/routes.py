@@ -113,7 +113,7 @@ def create_task():
 
         log_activity(f"Created task: {task.title}")
 
-        flash("Your task has been created!", "success")
+        flash("Task created successfully!", "success")
         return redirect(url_for("main.list_tasks"))
     return render_template("create_task.html", form=form)
 
