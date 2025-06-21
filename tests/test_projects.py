@@ -50,8 +50,9 @@ class ProjectTests(unittest.TestCase):
             'status': 'In Progress',
             'submit': 'Create Project'
         }, follow_redirects=True)
+        self.assertIn('project created successfully!', response.get_data(as_text=True).lower())
 
-        self.assertIn('Project created successfully!', response.get_data(as_text=True))
+        #self.assertIn('Project created successfully!', response.get_data(as_text=True))
 
     def test_edit_project(self):
         self.login_as(self.user)

@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Set the timeout to automatically hide the flash message after 3-5 seconds
         setTimeout(function () {
             flashMessage.classList.add('hidden'); // Add hidden class to trigger fade-out
-        }, 3000); // Change the duration (3000ms = 3 seconds) as desired
+        }, 5000); // Change the duration (3000ms = 3 seconds) as desired
 
         // Optionally, make the flash message clickable to manually dismiss it
         flashMessage.addEventListener('click', function () {
@@ -67,14 +67,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // Toggle the visibility of the profile edit form
-    document.getElementById('toggle-profile-form').addEventListener('click', function() {
-        var form = document.getElementById('profile-form');
-        if (form.style.display === 'none' || form.style.display === '') {
-            form.style.display = 'block';
-            this.textContent = 'Hide Edit Profile Form';
-        } else {
-            form.style.display = 'none';
-            this.textContent = 'Show Edit Profile Form';
-        }
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', function(event) {
+      if (!confirm('Are you sure you want to delete this task?')) {
+        event.preventDefault();  // Prevent form submission if cancelled
+      }
     });
+  });
+});

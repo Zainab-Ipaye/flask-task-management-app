@@ -60,6 +60,8 @@
                 </td>
                 <td>
                     <!-- Update Role button -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
                     <button type="submit" class="btn btn-primary">Update Role</button>
                     </form>
                     {% endif %}

@@ -57,7 +57,12 @@
     background-color: #4938b3;
 }
 
-  
+
+#profile-form {
+  display: none;
+}
+
+
   
 /* Centered Content for Smaller Screens */
 @media (max-width: 768px) {

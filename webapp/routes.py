@@ -160,7 +160,6 @@ def delete_task(task_id):
         flash('You do not have permission to delete tasks.', 'danger')
     return redirect(url_for('main.list_tasks'))
 
-
 @bp.route('/tasks', methods=['GET'])
 @login_required
 def list_tasks():
@@ -182,25 +181,22 @@ def list_tasks():
 
     pagination = tasks_query.paginate(page=page, per_page=per_page, error_out=False)
     tasks = pagination.items
- 
-    users_with_tasks = set(task.assignee for task in tasks if task.assignee)
-    projects_with_tasks = set(task.project for task in tasks if task.project)
-    
-    users = User.query.filter(User.id.in_([user.id for user in users_with_tasks])).all()
-    projects = Project.query.filter(Project.id.in_([project.id for project in projects_with_tasks])).all()
 
-    #tasks = tasks_query.all()
+    # Get distinct assigned user IDs from *all* tasks (not just paginated tasks)
+    assigned_user_ids = db.session.query(Task.assigned_to).distinct().filter(Task.assigned_to.isnot(None)).all()
+    assigned_user_ids = [uid[0] for uid in assigned_user_ids]
 
-    
-    # Fetch users and projects for the filters
-    users = User.query.all()
-    projects = Project.query.all()
+    # Get users with tasks
+    users = User.query.filter(User.id.in_(assigned_user_ids)).all()
 
-    
-    return render_template('list_tasks.html', tasks=tasks, users=users, projects=projects, pagination=pagination) 
+    # Get distinct assigned project IDs from *all* tasks
+    assigned_project_ids = db.session.query(Task.project_id).distinct().filter(Task.project_id.isnot(None)).all()
+    assigned_project_ids = [pid[0] for pid in assigned_project_ids]
 
+    # Get projects with tasks
+    projects = Project.query.filter(Project.id.in_(assigned_project_ids)).all()
 
-
+    return render_template('list_tasks.html', tasks=tasks, users=users, projects=projects, pagination=pagination)
 
 
 

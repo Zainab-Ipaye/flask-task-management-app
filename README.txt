@@ -128,7 +128,7 @@ Docker Setup (Optional but Recommended)
 Build the Docker image
 
 bash
-docker build -t task-manager-app .
+docker build -t zainabs-task-management-app .
 Run the container locally
 
 bash
@@ -139,7 +139,7 @@ Update config.py to contain the following -
 SECRET_KEY=your-local-secret-key
 SQLALCHEMY_DATABASE_URI=sqlite:///site.db
 FLASK_ENV=development
-WTF_CSRF_ENABLED=False
+WTF_CSRF_ENABLED=True
 
 
 
@@ -184,6 +184,24 @@ Open the app
 bash
 heroku open --app <your-app-name>
 
+
+
+User Role Management: Assignment Approach vs. Production Best Practice
+Current Implementation (For Assignment Testing)
+For the purposes of this assignment and ease of testing, the application allows users to select their desired role (user or admin) during the registration process. This enables reviewers and testers to immediately experience the application from different privilege perspectives without additional setup.
+
+Note: This approach is intended only for demonstration and assessment convenience.
+
+Ideal Production Approach
+In a production environment, allowing users to self-assign privileged roles such as admin during registration is a significant security risk and is not recommended. Instead, the following best practices should be implemented:
+
+Default Role Assignment: All new users are assigned a safe default role (e.g., user) upon registration.
+
+Role Approval Workflow: If a user requires elevated privileges, they must request the role, and their request is subject to approval by existing administrators through a secure admin interface.
+
+Restricted Access: Until approval, the user’s access is limited or disabled to prevent unauthorized privilege escalation.
+
+Audit & Logging: All role changes and approvals should be logged for security auditing.
 
 
 

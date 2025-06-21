@@ -28,17 +28,17 @@ class AuthTests(unittest.TestCase):
             db.drop_all()
 
     def test_home_loads(self):
-        response = self.client.get('/')
+        response = self.client.get('/', follow_redirects=True)
         #self.assertEqual(response.status_code, 200)
         self.assertIn(b'Zainab', response.data)
 
     def test_login_loads(self):
-        response = self.client.get('/')
+        response = self.client.get('/login', follow_redirects=True)
         #self.assertEqual(response.status_code, 200)
         self.assertIn(b'Email', response.data)
 
     def test_register_loads(self):
-        response = self.client.get('/')
+        response = self.client.get('/register', follow_redirects=True)
         #self.assertEqual(response.status_code, 200)
         self.assertIn(b'Confirm Password', response.data)
 
@@ -50,23 +50,23 @@ class AuthTests(unittest.TestCase):
             confirm_password='Password123!',
             role='user'
         ), follow_redirects=True)
-        self.assertIn(b'your account has been created', response.data.lower())
+        self.assertIn(b'your account has been created', response.get_data(as_text=True).lower())
 
         response = self.client.post('/login', data=dict(
             email='demo@example.com',
             password='Password123!'
         ), follow_redirects=True)
-        self.assertIn(b'welcome', response.data.lower())
+        self.assertIn(b'welcome', response.get_data(as_text=True).lower())
 
         response = self.client.get('/logout', follow_redirects=True)
-        self.assertIn(b'logged out', response.data.lower())
+        self.assertIn(b'logged out', response.get_data(as_text=True).lower())
 
     def test_login_failure(self):
         response = self.client.post('/login', data=dict(
             email='wrong@example.com',
             password='Wrongpass!'
         ), follow_redirects=True)
-        self.assertIn(b'Login failed. Check email and/or password.', response.data.lower())
+        self.assertIn(b'Login failed. Check email and/or password.', response.get_data(as_text=True).lower())
 
     def test_invalid_register_shows_errors(self):
         response = self.client.post('/register', data=dict(
@@ -76,5 +76,5 @@ class AuthTests(unittest.TestCase):
         confirm_password='mismatch',
         role='user'
     ), follow_redirects=True)
-        self.assertIn(b'Username is required', response.data)
+        self.assertIn(b'Username is required', response.get_data(as_text=True))
 

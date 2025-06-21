@@ -10,8 +10,12 @@
  <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
      <div class="container-fluid">
          <!-- Align "Filter List" button to the right -->
+          
         <div class="d-flex ms-auto">
-        <a href="#" id="filter-toggle-btn" class="nav-link">Filter</a>
+                <button id="filter-toggle-btn" class="btn btn-primary">
+                    FILTER
+                </button>
+        <!--<a href="#" id="filter-toggle-btn" class="nav-link">Filter</a>-->
         </div>
      </div>
  </nav>
@@ -85,9 +89,21 @@
                         🖊️
                     </a>
                     <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" style="border: none; background: transparent; color: #dc3545; cursor: pointer;" title="Delete Task" onclick="return confirm('Are you sure you want to delete this task?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                       <!--- <button type="submit" style="border: none; background: transparent; color: #dc3545; cursor: pointer;" title="Delete Task" onclick="return confirm('Are you sure you want to delete this task?')">
                             🗑️
-                        </button>
+                        </button> -->
+                        <button 
+                            type="submit" 
+                            class="btn-delete" 
+                            style="border: none; background: transparent; color: #dc3545; cursor: pointer;" 
+                            title="Delete Task"
+                            >
+                            🗑️
+                            </button>
+
+
                     </form>
                 </td>
             </tr>
