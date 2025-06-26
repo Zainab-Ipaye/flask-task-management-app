@@ -2,20 +2,17 @@
 
 {% block content %}
 <div class="container">
-
-    <!-- Navbar for Filter List (Visible if users count >= 1) -->
-    {% if users|length >= 1 %}
     <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
         <div class="container-fluid">
-            <!-- Align "Filter List" button to the right -->
             <div class="d-flex ms-auto">
                 <button id="filter-toggle-btn" class="btn btn-primary">
                     FILTER
                 </button>
+                <button type="button" id="clear-filter" class="btn btn-secondary">Clear Filter</button>
+
             </div>
         </div>
     </nav>
-    {% endif %}
 
     <form method="GET" action="{{ url_for('main.manage_users') }}" class="form-inline mb-4" id="filter-form">
         <div class="form-group">
@@ -24,6 +21,7 @@
                    value="{{ request.args.get('username', '') }}" placeholder="Enter username">
         </div>
         <button type="submit" class="btn btn-primary">Apply Filter</button>
+
         </div>
 
     </form>

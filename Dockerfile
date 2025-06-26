@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Install system dependencies (for mysqlclient, etc.)
+# Install system dependencie
 RUN apt-get update && apt-get install -y \
     gcc \
     libmariadb-dev \
@@ -20,15 +20,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy app source code
 COPY . .
 
-# Set environment variables (can be overridden by Heroku)
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Expose port for Heroku
 EXPOSE 5000
 
-# Launch app using gunicorn (recommended for Heroku)
-# Replace run:app with your correct entry point, e.g., app.py => app:app
-
 CMD ["sh", "-c", "gunicorn -b 0.0.0.0:$PORT run:app"]
-#CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]

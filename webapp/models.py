@@ -1,6 +1,8 @@
 from datetime import datetime
 from webapp import db, bcrypt
 from flask_login import UserMixin
+from sqlalchemy.orm import validates
+from sqlalchemy import CheckConstraint
 
 
 class Project(db.Model):
@@ -25,17 +27,15 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="user")
 
-    # One-to-many: A user can create many tasks
+    # A user can create many tasks
     created_tasks = db.relationship(
         "Task", foreign_keys="Task.created_by", backref="creator", lazy=True
     )
 
-    # One-to-many: A user can be assigned to many tasks
+    # A user can be assigned to many tasks
     assigned_tasks = db.relationship(
         "Task", foreign_keys="Task.assigned_to", backref="assignee", lazy=True
     )
-
-    # tasks = db.relationship('Task', foreign_keys='Task.created_by', backref='author', lazy=True)
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -64,14 +64,20 @@ class Task(db.Model):
         "Project", foreign_keys=[project_id], overlaps="project,tasks"
     )
 
-    # Relationship for creator (created_by) - specify the foreign key
-    # creator = db.relationship('User', foreign_keys=[created_by], backref='created_tasks')
+    @validates("hours_allocated", "hours_remaining")
+    def validate_hours(self, key, value):
+        if value < 0:
+            raise ValueError(f"{key.replace('_', ' ').title()} cannot be negative")
+        return value
 
-    # Relationship for assignee (assigned_to) - specify the foreign key
-    # assignee = db.relationship('User', foreign_keys=[assigned_to], backref='assigned_tasks')
-
-    created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    assigned_to = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    __table_args__ = (
+        CheckConstraint(
+            "hours_allocated >= 0", name="check_hours_allocated_non_negative"
+        ),
+        CheckConstraint(
+            "hours_remaining >= 0", name="check_hours_remaining_non_negative"
+        ),
+    )
 
     def __repr__(self):
         return f"<Task {self.title}>"

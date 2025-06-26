@@ -8,7 +8,7 @@ class FormValidationTests(unittest.TestCase):
         self.app = create_app(
             {
                 "TESTING": True,
-                "WTF_CSRF_ENABLED": False,  # Optional if disabling CSRF
+                "WTF_CSRF_ENABLED": False,
                 "SECRET_KEY": "testkey",
             }
         )
@@ -74,7 +74,7 @@ class FormValidationTests(unittest.TestCase):
                     "name": "Test Project",
                     "description": "Logic check",
                     "start_date": "2025-12-01",
-                    "end_date": "2025-01-01",  # Start > End
+                    "end_date": "2025-01-01",
                     "status": "In Progress",
                 }
             )

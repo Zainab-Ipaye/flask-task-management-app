@@ -3,10 +3,10 @@ from datetime import timedelta
 
 
 class Config:
-    # Flask-WTF Secret Key (used for CSRF, session encryption)
+    # Flask-WTF Secret Key
     SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key")
 
-    # Database URI (using SQLite if not set in Heroku config)
+    # Database URI
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "SQLALCHEMY_DATABASE_URI", "sqlite:///site.db"
     )

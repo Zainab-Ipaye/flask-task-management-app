@@ -1,15 +1,13 @@
-    // Toggle the visibility of the filter button
 document.addEventListener('DOMContentLoaded', function() {
     const filterToggleButton = document.getElementById('filter-toggle-btn');
     const filterForm = document.getElementById('filter-form');
 
     if (filterToggleButton && filterForm) {
         filterToggleButton.addEventListener('click', function () {
-            // Toggle the visibility of the filter form
             if (filterForm.style.display === 'none' || !filterForm.style.display) {
-                filterForm.style.display = 'block'; // Show the form
+                filterForm.style.display = 'block'; 
             } else {
-                filterForm.style.display = 'none'; // Hide the form
+                filterForm.style.display = 'none'; 
             }
         });
     }
@@ -21,17 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Timeout Notifications
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Get the flash message container
     const flashMessage = document.getElementById('flash-messages');
 
-    // Check if flash message exists on the page
     if (flashMessage) {
-        // Set the timeout to automatically hide the flash message after 3-5 seconds
-        setTimeout(function () {
-            flashMessage.classList.add('hidden'); // Add hidden class to trigger fade-out
-        }, 5000); // Change the duration (3000ms = 3 seconds) as desired
 
-        // Optionally, make the flash message clickable to manually dismiss it
+        setTimeout(function () {
+            flashMessage.classList.add('hidden'); 
+        }, 5000); 
+
         flashMessage.addEventListener('click', function () {
             flashMessage.classList.add('hidden');
         });
@@ -50,10 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Get the logout link element
     const logoutLink = document.getElementById('logout-link');
 
-    // Attach a click event listener
     logoutLink.addEventListener('click', function(event) {
         // Ask for confirmation before logging out
         const userConfirmed = confirm("Are you sure you want to log out?");
@@ -63,6 +56,23 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
         }
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const clearFilterBtn = document.getElementById('clear-filter');
+  const filterForm = document.getElementById('filter-form');
+
+  clearFilterBtn.addEventListener('click', () => {
+    filterForm.querySelectorAll('select').forEach(select => {
+      select.value = "";
+    });
+    filterForm.querySelectorAll('input[type="text"]').forEach(input => {
+      input.value = "";
+    });
+    
+    filterForm.submit();
+  });
 });
 
 
@@ -82,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Confirmation before submitting update form
     const updateForm = document.getElementById('profile-update-form');
     updateForm.addEventListener('submit', (e) => {
         if (!confirm('Are you sure you want to update your profile?')) {
@@ -92,13 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.btn-delete').forEach(button => {
     button.addEventListener('click', function(event) {
       if (!confirm('Are you sure you want to delete this task?')) {
-        event.preventDefault();  // Prevent form submission if cancelled
+        event.preventDefault();  
       }
     });
   });

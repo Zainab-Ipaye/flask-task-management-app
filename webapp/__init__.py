@@ -27,7 +27,6 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_object("config.Config")
 
-    # Use test config if provided (for unit tests)
     if test_config:
         app.config.update(test_config)
 

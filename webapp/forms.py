@@ -16,6 +16,7 @@ from wtforms.validators import (
     Email,
     EqualTo,
     ValidationError,
+    NumberRange,
 )
 from .models import User, Project
 from flask import current_app
@@ -30,8 +31,6 @@ def coerce_to_int_or_none(value):
 
 # Project Form Fields & Validation
 class ProjectForm(FlaskForm):
-    # class Meta:
-    # csrf = False #CHANGE TO TRUE
     name = StringField(
         "Project Name",
         validators=[
@@ -118,26 +117,20 @@ class RegistrationForm(FlaskForm):
             EqualTo("password", message="Password must match"),
         ],
     )
-    role = SelectField(
-        "Role",
-        choices=[("user"), ("admin")],
-        default="user",
-        validators=[DataRequired("Role is required")],
-    )
+    #role = SelectField(
+     #   "Role",
+      #  choices=[("user"), ("admin")],
+       # default="user",
+        #validators=[DataRequired("Role is required")],)
 
     submit = SubmitField("Sign Up")
 
 
 # Login Form Fields & Validation
 class LoginForm(FlaskForm):
-    # class Meta:
-    #    csrf = False #CHANGE TO TRUE
     email = StringField(
         "Email",
-        validators=[
-            DataRequired("Email is required"),
-            Email(message="Invalid email address."),
-        ],
+        validators=[DataRequired("Email is required")],
     )
     password = PasswordField(
         "Password", validators=[DataRequired("Password is required")]
@@ -147,8 +140,6 @@ class LoginForm(FlaskForm):
 
 # Task Form Fields & Validation
 class TaskForm(FlaskForm):
-    # class Meta:
-    #    csrf = False #CHANGE TO TRUE
     title = StringField(
         "Task Title",
         validators=[
@@ -168,7 +159,11 @@ class TaskForm(FlaskForm):
         ],
     )
     hours_allocated = IntegerField(
-        "Hours Allocated", validators=[DataRequired("Hours Allocated is required")]
+        "Hours Allocated",
+        validators=[
+            DataRequired("Hours Allocated is required"),
+            NumberRange(min=0, message="Hours Allocated must be zero or more."),
+        ],
     )
     status = SelectField(
         "Status",
@@ -196,9 +191,8 @@ class TaskForm(FlaskForm):
     hours_remaining = IntegerField(
         "Hours Remaining",
         validators=[
-            InputRequired(
-                "Hours Remaining is required"
-            )  # Replace DataRequired with InputRequired
+            InputRequired("Hours Remaining is required"),
+            NumberRange(min=0, message="Hours Allocated must be zero or more."),
         ],
     )
 

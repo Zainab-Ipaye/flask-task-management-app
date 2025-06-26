@@ -1,41 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="edit-navbar">
-        <a href="{{ url_for('main.create_task') }}" class="nav-link">Create Task</a>
-    </div>
+<div class="edit-navbar">
+    <a href="{{ url_for('main.create_task') }}" class="nav-link">Create Task</a>
+</div>
 
- <!-- Navbar for Filter List (Visible if tasks count >= 1) -->
- {% if tasks|length >= 1 %}
- <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
-     <div class="container-fluid">
-         <!-- Align "Filter List" button to the right -->
-          
-        <div class="d-flex ms-auto">
-                <button id="filter-toggle-btn" class="btn btn-primary">
-                    FILTER
-                </button>
-        <!--<a href="#" id="filter-toggle-btn" class="nav-link">Filter</a>-->
-        </div>
-     </div>
- </nav>
- {% endif %}
-
- 
 <div class="container">
-    <!-- Navbar for Add New Task -->
-    <nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
-        <div class="container-fluid">
-            <!-- Align "Add New Task" button to the right -->
+<nav class="navbar navbar-expand-lg navbar-light mb-4" style="background-color: transparent; box-shadow: none;">
+    <div class="container-fluid">
+        <div class="d-flex ms-auto">
+            <button id="filter-toggle-btn" class="btn btn-primary">
+                FILTER
+            </button>
+            <button type="button" id="clear-filter" class="btn btn-secondary">Clear Filter</button>
+
         </div>
-    </nav>
+    </div>
+</nav>
 
-
-    <!-- Filter Form (Initially Hidden) -->
     <form method="GET" action="{{ url_for('main.list_tasks') }}" class="form-inline mb-4" id="filter-form" style="display: none;">
-        <div class="form-group">
-            <label for="assignee_filter" class="mr-2">Assigned To:</label>
-            <select name="assignee" id="assignee_filter" class="form-control mr-4">
+        <div class="form-group me-3">
+            <label for="assignee_filter" class="me-2">Assigned To:</label>
+            <select name="assignee" id="assignee_filter" class="form-control">
                 <option value="">All</option>
                 {% for user in users %}
                 <option value="{{ user.id }}" {% if request.args.get('assignee') == user.id|string %}selected{% endif %}>
@@ -44,9 +30,10 @@
                 {% endfor %}
             </select>
         </div>
-        <div class="form-group">
-            <label for="project_filter" class="mr-2">Project:</label>
-            <select name="project" id="project_filter" class="form-control mr-4">
+        
+        <div class="form-group me-3">
+            <label for="project_filter" class="me-2">Project:</label>
+            <select name="project" id="project_filter" class="form-control">
                 <option value="">All</option>
                 {% for project in projects %}
                 <option value="{{ project.id }}" {% if request.args.get('project') == project.id|string %}selected{% endif %}>
@@ -55,9 +42,9 @@
                 {% endfor %}
             </select>
         </div>
-        <!-- Apply Filter Button -->
-        <div class="form-group ms-auto">
-            <button type="submit" class="nav-link" style="border: none; background: none;">Apply Filter</button>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Apply Filter</button>
         </div>
     </form>
 
@@ -65,35 +52,26 @@
     <table class="styled-table">
         <thead>
             <tr>
-                <!--   <th>#</th> -->
-
                 <th>Title</th>
                 <th>Status</th>
-                <th>Hours Remaining</th> 
+                <th>Hours Remaining</th>
                 <th>Assigned To</th>
                 <th>Actions</th>
-
             </tr>
         </thead>
         <tbody>
             {% for task in tasks %}
             <tr>
-              <!--   <td>{{ loop.index }}</td> -->
                 <td>{{ task.title }}</td>
                 <td><span class="badge {{ task.status|lower|replace(' ', '-') }}">{{ task.status }}</span></td>
                 <td>{{ task.hours_remaining }}</td>
                 <td>{{ task.assignee.username if task.assignee else 'N/A' }}</td>
                 <td>
-                    <!-- Edit & Delete link for each task -->
                     <a href="{{ url_for('main.edit_task', task_id=task.id) }}" style="color: #28a745; font-size: 20px; cursor: pointer;" title="Edit Task">
                         🖊️
                     </a>
                     <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="POST" style="display:inline;">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-                       <!--- <button type="submit" style="border: none; background: transparent; color: #dc3545; cursor: pointer;" title="Delete Task" onclick="return confirm('Are you sure you want to delete this task?')">
-                            🗑️
-                        </button> -->
                         <button 
                             type="submit" 
                             class="btn-delete" 
@@ -101,39 +79,35 @@
                             title="Delete Task"
                             >
                             🗑️
-                            </button>
-
-
+                        </button>
                     </form>
                 </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No tasks found.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
+    {% if pagination.pages > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.list_tasks', page=pagination.prev_num) }}">Previous</a>
+            </li>
+            {% endif %}
+            <li class="page-item disabled"><a class="page-link">Page {{ pagination.page }} of {{ pagination.pages }}</a></li>
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('main.list_tasks', page=pagination.next_num) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 </div>
 
-
-
-{% if pagination.pages > 1 %}
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      {% if pagination.has_prev %}
-        <li class="page-item">
-          <a class="page-link" href="{{ url_for('main.list_tasks', page=pagination.prev_num) }}">Previous</a>
-        </li>
-      {% endif %}
-      <li class="page-item disabled"><a class="page-link">Page {{ pagination.page }} of {{ pagination.pages }}</a></li>
-      {% if pagination.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="{{ url_for('main.list_tasks', page=pagination.next_num) }}">Next</a>
-        </li>
-
-
-      {% endif %}
-    </ul>
-  </nav>
-  {% endif %}
-
 {% endblock %}
-

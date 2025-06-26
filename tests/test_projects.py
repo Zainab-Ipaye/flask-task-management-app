@@ -43,7 +43,6 @@ class ProjectTests(unittest.TestCase):
         return user
 
     def login_as(self, user):
-        # Manually set user session keys to bypass login route
         with self.client.session_transaction() as sess:
             sess["_user_id"] = str(user.id)
             sess["_fresh"] = True

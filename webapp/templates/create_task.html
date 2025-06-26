@@ -9,8 +9,6 @@
     <a href="{{ url_for('main.list_tasks') }}" class="nav-link">Cancel</a>
 </div>
 
-  <!--  <h2>Create Task</h2> -->
-
     <form method="POST" action="{{ url_for('main.create_task') }}">
         {{ form.hidden_tag() }}
 

@@ -3,7 +3,7 @@ Zainab's Task Management App: A Comprehensive Guide
 
 Overview:
 
-Zainab's Task Management App is a secure, containerized Flask web application for managing projects and tasks. It supports user registration, login, role-based access, and real-time task and project management. The app incorporates modern DevOps practices, including CI/CD pipelines with GitHub Actions, static code analysis, security scanning, and Dockerized deployment to Heroku.
+Zainab's Task Management App is a secure, containerized Flask web application for managing projects and tasks. It supports user registration, login and role-based access. The app incorporates modern DevOps practices, including CI/CD pipelines with GitHub Actions, static code analysis, security scanning, and Dockerized deployment to Heroku.
 
 This README details setup, usage, testing, deployment, and troubleshooting.
 
@@ -16,6 +16,8 @@ User Registration & Authentication: Secure login with role-based access (admin/u
 Task Management: Users can create, read, update tasks; admins can also delete.
 
 Project Management: Users and admins can manage projects with key fields (name, start/end date, status).
+
+Profile Management: Usernames and emails can be updated.
 
 Admin Controls: Admins can manage users and security roles.
 
@@ -80,6 +82,46 @@ Open http://localhost:5000 in your browser.
 All dependencies can be found in the requirements.txt file which is included in the source code file.
 
 
+Docker Setup (Optional but Recommended)
+
+Build the Docker image
+
+bash
+docker build -t zainabs-task-management-app .
+Run the container locally
+
+bash
+docker run -p 5000:5000 task-manager-app
+Access at http://localhost:5000
+
+Update config.py to contain the following -
+SECRET_KEY=your-local-secret-key
+SQLALCHEMY_DATABASE_URI=sqlite:///site.db
+FLASK_ENV=development
+WTF_CSRF_ENABLED=True
+
+
+
+
+Running Database Migrations in Docker
+
+To run database migrations inside the running container, first find the container ID:
+
+bash
+docker ps
+Then run:
+
+bash
+docker exec -it <container_id> flask db upgrade
+
+
+
+
+
+
+
+
+
 MySQL Setup with JawsDB on Heroku (Docker Deployment)
 Steps
 Create Heroku app and add JawsDB
@@ -120,41 +162,6 @@ Access your deployed app
 
 bash
 heroku open --app <your-app-name>
-
-
-
-Docker Setup (Optional but Recommended)
-
-Build the Docker image
-
-bash
-docker build -t zainabs-task-management-app .
-Run the container locally
-
-bash
-docker run -p 5000:5000 task-manager-app
-Access at http://localhost:5000
-
-Update config.py to contain the following -
-SECRET_KEY=your-local-secret-key
-SQLALCHEMY_DATABASE_URI=sqlite:///site.db
-FLASK_ENV=development
-WTF_CSRF_ENABLED=True
-
-
-
-
-Running Database Migrations in Docker
-
-To run database migrations inside the running container, first find the container ID:
-
-bash
-docker ps
-Then run:
-
-bash
-docker exec -it <container_id> flask db upgrade
-
 
 
 Deployment on Heroku

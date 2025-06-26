@@ -30,7 +30,6 @@ class TaskTests(unittest.TestCase):
             "admin", "admin@example.com", self.admin_password, "admin"
         )
 
-        # Create a sample project so tasks can link to it
         from webapp.models import Project
 
         self.project = Project(
@@ -56,7 +55,6 @@ class TaskTests(unittest.TestCase):
         return user
 
     def login_as(self, user):
-        # Manually set user session keys to bypass login route
         with self.client.session_transaction() as sess:
             sess["_user_id"] = str(user.id)
             sess["_fresh"] = True
@@ -104,7 +102,7 @@ class TaskTests(unittest.TestCase):
         self.assertIn("task title", html)
         self.assertIn('value="sample task"', html)
         self.assertIn("description", html)
-        self.assertIn("a sample description", html)  # relaxed check
+        self.assertIn("a sample description", html)
         self.assertIn("hours allocated", html)
         self.assertIn('value="6"', html)
         self.assertIn("assigned to", html)

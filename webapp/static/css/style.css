@@ -1,6 +1,6 @@
 /* Hero Section */
 .hero-section {
-    height: 100vh; /* Full-screen height */
+    height: 100vh; 
     background-color: #6c5ce7;
     background-image: linear-gradient(to bottom, #6c5ce7, #836dff);
     color: #ffffff;
@@ -105,28 +105,28 @@ body {
 
 /* Main Navbar Styling (Updated) */
 .navbar.main-navbar {
-    background: linear-gradient(45deg, #6c5ce7, #a29bfe); /* Soft gradient background */
+    background: linear-gradient(45deg, #6c5ce7, #a29bfe); 
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 12px;  /* Rounded corners */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);  /* Soft shadow for depth */
+    border-radius: 12px;  
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); 
 }
 
 /* Navbar brand styling */
 .navbar.main-navbar .navbar-brand {
     font-size: 2rem;
-    font-weight: 800;  /* Bold font */
+    font-weight: 800;  
     color: white;
     text-decoration: none;
     letter-spacing: 2px;
     text-transform: uppercase;
-    transition: color 0.3s ease;  /* Smooth color transition */
+    transition: color 0.3s ease;  
 }
 
 .navbar.main-navbar .navbar-brand:hover {
-    color: #f3f3f3;  /* Lighten color on hover */
+    color: #f3f3f3; 
 }
 
 /* Navbar links */
@@ -138,8 +138,7 @@ body {
 }
 
 .navbar.main-navbar .navbar-links li {
-    position: relative; /* Positioning for hover effects */
-}
+    position: relative; }
 
 .navbar.main-navbar .navbar-links li a {
     text-decoration: none;
@@ -149,12 +148,12 @@ body {
     letter-spacing: 1px;
     text-transform: uppercase;
     position: relative;
-    transition: color 0.3s ease, transform 0.3s ease;  /* Smooth transitions */
+    transition: color 0.3s ease, transform 0.3s ease;  
 }
 
 .navbar.main-navbar .navbar-links li a:hover {
     color: #f3f3f3;
-    transform: translateY(-3px);  /* Slight lifting effect */
+    transform: translateY(-3px); 
 }
 
 /* Active link styling */
@@ -172,13 +171,13 @@ body {
     height: 2px;
     background-color: #f3f3f3;
     transition: width 0.3s ease;
-    bottom: -5px; /* Place the underline just below the text */
+    bottom: -5px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .navbar.main-navbar .navbar-links li a:hover:after {
-    width: 100%; /* Expand the underline when hovered */
+    width: 100%; 
 }
 
 /* Responsive Navbar for Main Navbar */
@@ -218,10 +217,10 @@ body {
 
 /* Filter Navbar */
 .navbar.filter-navbar {
-    background-color: #ffffff; /* Default background */
+    background-color: #ffffff; 
     padding: 10px 20px;
-    box-shadow: none; /* No shadow for the filter navbar */
-    border-radius: 0; /* Keep it square */
+    box-shadow: none; 
+    border-radius: 0; 
 }
 
 .navbar.filter-navbar .navbar-links {
@@ -232,12 +231,12 @@ body {
 
 .navbar.filter-navbar .navbar-links li a {
     text-decoration: none;
-    color: #333; /* Default color */
+    color: #333; 
     font-size: 1rem;
 }
 
 .navbar.filter-navbar .navbar-links li a:hover {
-    color: #6c5ce7; /* Hover effect for filter links */
+    color: #6c5ce7; 
 }
 
 
@@ -246,7 +245,7 @@ body {
 
 /*Set filter toggle to false*/
 #filter-form {
-    display: none; /* Hide the form by default */
+    display: none; 
 }
 
 
@@ -413,23 +412,18 @@ footer {
     margin: 10px 0;
     border-radius: 5px;
     font-size: 14px;
-    cursor: pointer; /* Allow users to click to dismiss */
+    cursor: pointer; 
     opacity: 1;
-    transition: opacity 1s ease-out; /* Smooth fade-out effect */
+    transition: opacity 1s ease-out; 
 }
 
 #flash-messages.hidden {
     opacity: 0;
-    pointer-events: none; /* Prevent interaction when hidden */
-    display: none; /* Ensure it's not displayed after fading */
+    pointer-events: none; 
+    display: none; 
 }
 
 
-
-
-
-
-/* Styling for task/project status badges */
 .badge {
     padding: 5px 10px;
     border-radius: 12px;
@@ -438,19 +432,19 @@ footer {
 }
 
 .badge.new {
-    background-color: #28a745;  /* Green */
+    background-color: #28a745;  
 }
 
 .badge.in-progress {
-    background-color: #ffc107;  /* Yello */
+    background-color: #ffc107;  
 }
 
 .badge.completed {
-    background-color: #17a2b8;  /* Blue */
+    background-color: #17a2b8;  
 }
 
 .badge.removed {
-    background-color: #dc3545;  /* Red */
+    background-color: #dc3545; 
 }
 .badge.not-started {
     background-color: gray;
@@ -466,23 +460,23 @@ footer {
 
 
 
-/* General Button Styles (applies to both buttons and links styled as buttons) */
+/* General Button Styles */
 button, .btn-primary, .btn-secondary, a.btn-secondary {
     display: inline-block;
     padding: 12px 30px;
     font-size: 1.1rem;
     font-weight: 600;
     text-transform: uppercase;
-    border-radius: 30px; /* Ensure roundness */
+    border-radius: 30px; 
     cursor: pointer;
-    text-decoration: none; /* Remove underline from links */
-    text-align: center; /* Ensure text is centered */
+    text-decoration: none; 
+    text-align: center; 
     transition: background-color 0.3s ease;
-    border: none; /* No border unless specified */
+    border: none; 
 }
 
 button, .btn-primary {
-    background-color: #6c5ce7; /* Primary button color */
+    background-color: #6c5ce7; 
     color: white;
 }
 
@@ -491,7 +485,7 @@ button:hover, .btn-primary:hover {
 }
 
 a.btn-secondary {
-    background-color: #a29bfe; /* Secondary button color */
+    background-color: #a29bfe; 
     color: white;
 }
 
@@ -522,42 +516,26 @@ a.btn-secondary:hover {
     transition: all 0.3s ease;
 }
 
-
-
-
-
 /* Navbar Styling for the Edit Page */
 .edit-navbar {
     display: flex;
-    justify-content: flex-end; /* Aligns items to the right */
-    gap: 30px; /* Adds spacing between the links */
-    margin-bottom: 20px; /* Space below navbar */
-    font-size: 1.2rem; /* Makes text larger */
+    justify-content: flex-end;
+    gap: 30px; 
+    margin-bottom: 20px; 
+    font-size: 1.2rem; 
 }
-
 .edit-navbar .nav-link {
-    font-weight: 700; /* Makes the text bold */
-    text-decoration: none; /* Removes underline */
-    color: #6c5ce7; /* Primary color from your app palette */
-    transition: color 0.3s ease; /* Smooth color change on hover */
+    font-weight: 700; 
+    text-decoration: none; 
+    color: #6c5ce7; 
+    transition: color 0.3s ease; 
 }
 
 .edit-navbar .nav-link:hover {
-    color: #4938b3; /* Darker shade on hover */
+    color: #4938b3; 
 }
 
 /* Optional: Make the links slightly larger on hover */
 .edit-navbar .nav-link:hover {
-    font-size: 1.3rem; /* Slightly increase size on hover */
+    font-size: 1.3rem; 
 }
-
-
-
-
-
-
-
-
-
-
-

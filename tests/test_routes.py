@@ -85,7 +85,6 @@ class AuthTests(unittest.TestCase):
         )
 
     def test_500_page(self):
-        # Simulate error by calling a route that raises exception or patch route to raise
         with self.assertRaises(Exception):
             with self.app.test_request_context("/trigger-error"):
                 raise Exception("Testing 500 error")
@@ -140,7 +139,7 @@ class AuthTests(unittest.TestCase):
         self.assertIn("Page not found", response.get_data(as_text=True))
 
     def test_project_detail_view(self):
-        self.login_as(self.user)  # <-- ensure user logged in
+        self.login_as(self.user)
         with self.app_context:
             project = Project(
                 name="Test Project",

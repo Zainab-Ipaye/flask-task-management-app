@@ -36,14 +36,14 @@ def register():
             username=form.username.data,
             email=form.email.data,
             password=hashed_password,
-            role=form.role.data,
+            role='user'
+           # role=form.role.data,
         )
-
         # Add user to the database
         db.session.add(user)
         db.session.commit()
         flash("Your account has been created!", "success")
-        return redirect(url_for("main.login"))  # Redirect after successful registration
+        return redirect(url_for("main.login"))
 
     # If form submission is invalid or on initial page load, render the form again
     return render_template("register.html", form=form)
@@ -79,7 +79,7 @@ def logout():
     return redirect(url_for("main.home"))
 
 
-# TASKS ROUTES
+# --------------- TASKS ROUTES ---------------
 
 
 # Task board route for logged-in users
@@ -178,10 +178,8 @@ def list_tasks():
     assignee_id = request.args.get("assignee", type=int)
     project_id = request.args.get("project", type=int)
 
-    # Base query
     tasks_query = Task.query
 
-    # Apply filters
     if assignee_id:
         tasks_query = tasks_query.filter(Task.assigned_to == assignee_id)
     if project_id:
@@ -190,7 +188,7 @@ def list_tasks():
     pagination = tasks_query.paginate(page=page, per_page=per_page, error_out=False)
     tasks = pagination.items
 
-    # Get distinct assigned user IDs from *all* tasks (not just paginated tasks)
+    # Get distinct assigned user IDs from all tasks
     assigned_user_ids = (
         db.session.query(Task.assigned_to)
         .distinct()
@@ -202,7 +200,7 @@ def list_tasks():
     # Get users with tasks
     users = User.query.filter(User.id.in_(assigned_user_ids)).all()
 
-    # Get distinct assigned project IDs from *all* tasks
+    # Get distinct assigned project IDs from all tasks
     assigned_project_ids = (
         db.session.query(Task.project_id)
         .distinct()
@@ -223,7 +221,7 @@ def list_tasks():
     )
 
 
-# PROJECT ROUTES
+# ----------------- PROJECT ROUTES -------------------
 
 
 @bp.route("/projects/create", methods=["GET", "POST"])
@@ -318,7 +316,6 @@ def list_projects():
     if status_filter:
         query = query.filter(Project.status == status_filter)
 
-    # Pagination
     page = request.args.get("page", 1, type=int)
     per_page = 5
     pagination = query.order_by(Project.start_date.desc()).paginate(
@@ -337,13 +334,13 @@ def list_projects():
     )
 
 
-# PROFILE ROUTES
+# ---------------------- PROFILE ROUTES ------------------------
 
 
 @bp.route("/profile")
 def profile():
     # Fetch user details from the database
-    user = User.query.get(current_user.id)  # assuming current_user is logged in
+    user = User.query.get(current_user.id)
     return render_template("profile.html", user=user)
 
 
@@ -367,7 +364,7 @@ def update_profile():
     return redirect(url_for("main.profile"))
 
 
-# MANAGER USER ROUTES
+# -------------- MANAGE USER ROUTES -----------------
 
 
 @bp.route("/admin/users", methods=["GET", "POST"])
@@ -383,7 +380,7 @@ def manage_users():
         return redirect(url_for("main.list_tasks"))
 
     username_filter = request.args.get("username", "").lower()
-    all_users = User.query.all()  # Fetch all users from the database
+    all_users = User.query.all()
 
     if username_filter:
         users = [user for user in all_users if username_filter in user.username.lower()]
