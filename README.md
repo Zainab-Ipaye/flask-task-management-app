@@ -28,9 +28,11 @@ cd flask-task-management-app
 
 bash
 python -m venv venv
-# Windows
+
+For Windows
 venv\Scripts\activate
-# macOS/Linux
+
+For macOS/Linux
 source venv/bin/activate
 
 ### 3. Install Dependencies
@@ -44,8 +46,8 @@ Create a .env file in the root directory with your admin user credentials:
 
 Copy
 ADMIN_USERNAME=admin
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=AdminPassword123!
+ADMIN_EMAIL=adminemail@test.com
+ADMIN_PASSWORD=AdminPassworTest1!
 SECRET_KEY=your-secret-key
 FLASK_ENV=development
 SQLALCHEMY_DATABASE_URI=sqlite:///site.db
