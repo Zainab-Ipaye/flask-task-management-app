@@ -1,0 +1,4 @@
+# file: C:\Users\User\Downloads\SEDO ZainabIpaye L6\webapp\__init__.py
+# hypothesis_version: 6.135.9
+
+[404, 500, "'self'", 'DENY', 'FLASK_ENV', 'config.Config', 'default-src', 'development', 'errors/404.html', 'errors/500.html', 'font-src', 'script-src', 'style-src']

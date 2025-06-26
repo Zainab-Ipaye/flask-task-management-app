@@ -117,11 +117,6 @@ class RegistrationForm(FlaskForm):
             EqualTo("password", message="Password must match"),
         ],
     )
-    #role = SelectField(
-     #   "Role",
-      #  choices=[("user"), ("admin")],
-       # default="user",
-        #validators=[DataRequired("Role is required")],)
 
     submit = SubmitField("Sign Up")
 

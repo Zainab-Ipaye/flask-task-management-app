@@ -36,8 +36,8 @@ def register():
             username=form.username.data,
             email=form.email.data,
             password=hashed_password,
-            role='user'
-           # role=form.role.data,
+            role="user",
+            # role=form.role.data,
         )
         # Add user to the database
         db.session.add(user)

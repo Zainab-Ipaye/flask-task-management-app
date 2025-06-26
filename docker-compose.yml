@@ -27,6 +27,9 @@ services:
       FLASK_ENV: development
       SQLALCHEMY_DATABASE_URI: mysql+pymysql://flaskuser:flaskpassword@mysql:3306/flaskmanagementappdb
       SECRET_KEY: mydevkey
+      ADMIN_USERNAME: admin
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: AdminPassword123!
     command: 
       ["bash", "./wait-for-it.sh", "mysql:3306", "--strict", "--timeout=100", "--", "flask", "run", "--host=0.0.0.0"]
 

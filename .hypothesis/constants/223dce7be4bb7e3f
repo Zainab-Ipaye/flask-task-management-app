@@ -1,0 +1,4 @@
+# file: C:\Users\User\Downloads\SEDO ZainabIpaye L6\webapp\models.py
+# hypothesis_version: 6.135.9
+
+[100, 120, 255, 'Not Started', 'Project', 'Task', 'Task.assigned_to', 'Task.created_by', 'User', 'activity_logs', 'assignee', 'creator', 'hours_allocated', 'hours_allocated >= 0', 'hours_remaining', 'hours_remaining >= 0', 'new', 'project', 'project,tasks', 'projects', 'projects.id', 'user', 'user.id']

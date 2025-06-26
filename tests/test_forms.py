@@ -26,12 +26,12 @@ class FormValidationTests(unittest.TestCase):
                     "username": "newuser",
                     "email": "newuser@example.com",
                     "password": "Testpass123!",
-                    "confirm_password": "Testpass123!",
-                    "role": " ",
+                    "confirm_password": " ",
+                    "role": "user",
                 }
             )
             self.assertFalse(form.validate())
-            self.assertIn("Role is required", form.role.errors)
+            self.assertIn("Please confirm your password.", form.role.errors)
 
     def test_valid_registration_form(self):
         with self.app.test_request_context():

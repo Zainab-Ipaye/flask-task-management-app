@@ -1,0 +1,4 @@
+# file: C:\Users\User\Downloads\SEDO ZainabIpaye L6\config.py
+# hypothesis_version: 6.135.9
+
+['SECRET_KEY', 'fallback-secret-key', 'sqlite:///site.db']
