@@ -12,8 +12,7 @@ class ProjectTests(unittest.TestCase):
                 "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
                 "WTF_CSRF_ENABLED": False,
                 "SECRET_KEY": "testkey",
-                "LOGIN_DISABLED": False
-
+                "LOGIN_DISABLED": False,
             }
         )
         self.app_context = self.app.app_context()

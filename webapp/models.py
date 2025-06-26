@@ -1,5 +1,4 @@
 from datetime import datetime
-from webapp import db, bcrypt
 from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from sqlalchemy import CheckConstraint

@@ -27,7 +27,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "newuser@example.com",
                     "password": "Testpass123!",
                     "confirm_password": " ",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -41,7 +40,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "valid@example.com",
                     "password": "StrongPass123!",
                     "confirm_password": "StrongPass123!",
-                    #"role": "user",
                 }
             )
             self.assertTrue(form.validate())
@@ -61,7 +59,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "not-an-email",
                     "password": "Pass123!",
                     "confirm_password": "Pass123!",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -117,7 +114,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "user2@example.com",
                     "password": "pass1",
                     "confirm_password": "pass2",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -131,7 +127,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "user2@example.com",
                     "password": "pass1",
                     "confirm_password": "pass1",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -147,7 +142,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "user2@example.com",
                     "password": "pass10111",
                     "confirm_password": "pass10111",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -164,7 +158,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "user2@example.com",
                     "password": "Passwords",
                     "confirm_password": "Passwords",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -180,7 +173,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "user2@example.com",
                     "password": "Passwords1",
                     "confirm_password": "Passwords1",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
@@ -197,7 +189,6 @@ class FormValidationTests(unittest.TestCase):
                     "email": "",
                     "password": "pass",
                     "confirm_password": "pass",
-                    #"role": "user",
                 }
             )
             self.assertFalse(form.validate())
