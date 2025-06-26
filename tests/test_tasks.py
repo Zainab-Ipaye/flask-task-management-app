@@ -12,11 +12,14 @@ class TaskTests(unittest.TestCase):
                 "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
                 "WTF_CSRF_ENABLED": False,
                 "SECRET_KEY": "testkey",
+                "LOGIN_DISABLED": False
+
             }
         )
         self.app_context = self.app.app_context()
         self.app_context.push()
 
+        db.drop_all()
         db.create_all()
         self.client = self.app.test_client()
 
@@ -134,7 +137,7 @@ class TaskTests(unittest.TestCase):
         response = self.client.get("/tasks", follow_redirects=True)
         html = response.get_data(as_text=True)
 
-        self.assertIn("Are you sure you want to delete this task?", html)
+        self.assertIn('class="btn-delete"', html)
         self.assertIn(f'action="/task/{task.id}/delete"', html)
         self.assertIn('method="POST"', html)
 

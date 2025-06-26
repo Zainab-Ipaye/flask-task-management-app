@@ -1,21 +1,12 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
-from flask_migrate import Migrate
-from flask_wtf import CSRFProtect
-from flask_talisman import Talisman
 from dotenv import load_dotenv
 import os
+from flask_login import LoginManager
 
-# Initialize core extensions
-db = SQLAlchemy()
-bcrypt = Bcrypt()
-migrate = Migrate()
-csrf = CSRFProtect()
-talisman = Talisman()
 
-from webapp.models import User
+from .extensions import db, bcrypt, migrate, csrf, talisman
+from .models import User
+
 
 # Define Content Security Policy (CSP)
 csp = {

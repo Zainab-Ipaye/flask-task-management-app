@@ -3,6 +3,7 @@ from webapp import db, bcrypt
 from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from sqlalchemy import CheckConstraint
+from .extensions import db, bcrypt
 
 
 class Project(db.Model):

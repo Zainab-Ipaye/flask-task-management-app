@@ -12,11 +12,14 @@ class AdminRouteTests(unittest.TestCase):
                 "WTF_CSRF_ENABLED": False,
                 "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
                 "SECRET_KEY": "test_secret_key",
+                "LOGIN_DISABLED": False
             }
         )
 
         self.app_context = self.app.app_context()
         self.app_context.push()
+        
+        db.drop_all()
         db.create_all()
 
         self.client = self.app.test_client()

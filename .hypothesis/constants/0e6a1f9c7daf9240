@@ -1,0 +1,4 @@
+# file: C:\Users\User\Downloads\SEDO ZainabIpaye L6\webapp\routes.py
+# hypothesis_version: 6.135.9
+
+['/', '/admin/users', '/login', '/logout', '/profile', '/projects', '/projects/create', '/register', '/tasks', '/tasks/create', '/update_profile', 'Form errors:', 'GET', 'Is authenticated?', 'POST', 'Role:', 'Select Project', 'Select User', 'Updated profile', 'Updated role', 'User logged in', 'User logged out', 'admin', 'admin_users.html', 'assignee', 'create_project.html', 'create_task.html', 'danger', 'edit_project.html', 'edit_task.html', 'email', 'home.html', 'info', 'list_projects.html', 'list_tasks.html', 'login.html', 'main', 'main.home', 'main.list_projects', 'main.list_tasks', 'main.login', 'main.manage_users', 'main.profile', 'page', 'profile.html', 'project', 'register.html', 'role', 'status', 'success', 'user', 'username', 'utf-8']
