@@ -6,7 +6,7 @@
 
  
 
-This test plan outlines the testing strategy used to validate the functionality, security, and robustness of the Task Management application built with Flask. It includes unit, integration, and security tests aligned with OWASP and DevOps best practices.
+This test plan outlines the testing strategy used to validate the functionality, security, and robustness of Zainab's Task Management application built with Flask. It includes unit, integration, and security tests aligned with OWASP and DevOps best practices.
 
  
 
@@ -30,7 +30,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
 | Security Testing    | Manual & automated       | Validate OWASP compliance (XSS, CSRF, Auth)  |
 
-| Coverage Reporting  | `coverage.py`            | Ensure 80%+ code coverage                    |
+| Coverage Reporting  | `coverage report -m`            | Ensure 70%+ code coverage                    |
 
  
 
@@ -48,7 +48,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
 | OW1 | CSRF protection works                                 | Submit a form without a CSRF token                                                      | 403 Forbidden error                           |
 
-| OW2 | Admin route access control                            | Logged-in user tries to access `/admin/users`                                            | Redirected with flash: “Admin access only”    |
+| OW2 | Admin route access control                            | Logged-in user tries to access `/admin/users`                                            | Redirected with flash: “You do not have permission to access this page.”    |
 
 | OW3 | Input sanitisation to prevent SQL injection           | Input `"' OR 1=1 --` in login or project fields                                         | Query fails safely, no data exposed           |
 
@@ -78,7 +78,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
 | F3      | Login Success      | Login with valid credentials                        | Redirect to dashboard, session active       |
 
-| F4      | Login Failure      | Invalid credentials                                 | Flash: "Invalid credentials"                |
+| F4      | Login Failure      | Invalid credentials                                 | Flash: "Login failed. Check email and/or password."                |
 
  
 
@@ -94,9 +94,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
 | F6      | Edit Project            | Edit name/description of existing project     | Changes saved and reflected               |
 
-| F7      | Delete (admin only)     | Admin deletes project                         | Project removed, flash shown              |
-
-| F8      | Unauthorized Delete     | User tries to delete                          | Redirected with error                     |
+| F7      | Delete (admin only)     | Admin deletes project                         | Project confirmation box pops up -> project removed -> flash shown              |
 
  
 
@@ -112,10 +110,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
 | F10     | Update Task           | Edit task title/description            | Task updated                         |
 
-| F11     | Delete Task (admin)   | Admin clicks delete                    | Task removed                         |
-
-| F12     | Delete Task (user)    | User tries delete                      | Access denied                        |
-
+| F11     | Delete Task (admin)   | Admin clicks delete                    | Task confirmation box pops up -> task removed -> flash shown                         |
  
 
 ---
@@ -142,7 +137,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
  
 
-## 6. Test Artifacts Location
+## 6. Test Artefacts Location
 
  
 
@@ -152,7 +147,7 @@ This test plan outlines the testing strategy used to validate the functionality,
 
 - `coverage report`: In `htmlcov/index.html` when run locally
 
-- Screenshot evidence: `/screenshots/owasp_xss_block.png`, etc.
+- Screenshot evidence: Can be found in the written assignment and VIVA presentation.
 
  
 
