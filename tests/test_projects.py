@@ -107,7 +107,7 @@ class ProjectTests(unittest.TestCase):
         response = self.client.get("/projects", follow_redirects=True)
         html = response.get_data(as_text=True)
 
-        self.assertIn('class=".btn-delete-project"', html)
+        self.assertIn('class="btn-delete-project"', html)
         self.assertIn(f'action="/project/{project.id}/delete"', html)
         self.assertIn('method="POST"', html)
 
